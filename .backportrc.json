@@ -1,0 +1,5 @@
+{
+  "upstream": "aaronoah/kibana_calendar_vis",
+  "branches": ["6.4"],
+  "labels": ["backport"]
+}
