@@ -1,10 +1,20 @@
 # kibana_calendar_vis
 
-> A calendar heatmap visualization in Kibana Visualize app
+A calendar heatmap visualization in Kibana Visualize app
 
----
+![Demo](demo.gif)
+
+## Installation
+
+The plugin is on alpha and not be available to provide a release at the moment. You can still clone the repo locally to see how it works.
+
+### Compatibility
+
+Kibana v6.4 and onwards
 
 ## development
+
+Be sure to clone `kibana_calendar_vis` under a folder `kibana_extra` that is in parallel to `kibana` in order to properly link scripts and tests.
 
 See the [kibana contributing guide](https://github.com/elastic/kibana/blob/master/CONTRIBUTING.md) for instructions setting up your development environment. Once you have completed that, use the following yarn scripts.
 
