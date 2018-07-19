@@ -17,6 +17,7 @@
  * under the License.
  */
 
+import d3 from 'd3';
 import { VislibLibDispatchProvider as vislibDispatch } from 'ui/vislib/lib/dispatch';
 
 export function calendarDispatchProvider(config) {
@@ -33,6 +34,26 @@ export function calendarDispatchProvider(config) {
         value: +d.y
       };
     }
+
+    removeEvent(event) {
+      return function (selection) {
+        selection.each(function () {
+          const element = d3.select(this);
+          return element.on(event, null);
+        });
+      };
+    }
+
+    removeHoverEvent() {
+      this.handler.highlight = null;
+      return this.removeEvent('mouseover');
+    }
+
+    removeMouseoutEvent() {
+      this.handler.unHighlight = null;
+      return this.removeEvent('mouseout');
+    }
+
   }
 
   return CalendarDispatch;

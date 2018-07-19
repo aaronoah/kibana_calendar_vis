@@ -17,31 +17,23 @@
  * under the License.
  */
 
-import _ from 'lodash';
-import { BaseConfig } from './base_config';
+import { uiModules } from 'ui/modules';
+import editorOptionsTemplate from './editor_options.html';
+import './calendar_options';
+const module = uiModules.get('kibana');
 
-export const VIS_CHART_TYPE = {
-  HEATMAP_YEAR: 'heatmap_year'
-};
-
-const DEFAULT_VIS_CONFIG = {
-  type: VIS_CHART_TYPE.HEATMAP_YEAR,
-  style: {
-    margin: { top: 10, right: 3, bottom: 5, left: 3 }
-  },
-  alerts: [],
-  categoryAxes: [],
-  valueAxes: [],
-  grid: {}
-};
-
-export class CalendarVisConfig extends BaseConfig {
-  constructor(visConfigArgs) {
-    super(visConfigArgs);
-    this._values = _.defaultsDeep({}, this._values, DEFAULT_VIS_CONFIG);
-  }
-
-  update(visConfigArgs) {
-    this._values = _.cloneDeep(visConfigArgs);
-  }
-}
+module.directive('editorOptions', function () {
+  return {
+    restrict: 'E',
+    template: editorOptionsTemplate,
+    replace: false,
+    link: function () {
+      /*
+      * Justification for intentionally hide the default buckets:
+      * they are only used for internal request and should not be seen and edited by users
+      */
+      const defaultBuckets = document.querySelector('vis-editor-agg-group[group-name="buckets"]');
+      defaultBuckets.style = 'visibility:hidden';
+    }
+  };
+});

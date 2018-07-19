@@ -27,6 +27,7 @@ import image from '@elastic/eui/lib/components/icon/assets/calendar.svg';
 import { AggResponsePointSeriesProvider } from 'ui/agg_response/point_series/point_series';
 import { defaultFeedbackMessage } from 'ui/vis/default_feedback_message';
 import { calendarVisualizationProvider } from './calendar_visualization';
+import './components/editor/editor_options';
 import { defaultParams } from './default_settings';
 
 VisTypesRegistryProvider.register((Private, config) => {
@@ -70,9 +71,9 @@ VisTypesRegistryProvider.register((Private, config) => {
           value: 'bottom',
           text: 'bottom',
         }],
-        scales: ['linear', 'log', 'square root'],
         colorSchemas: Object.keys(vislibColorMaps),
       },
+      optionsTemplate: '<editor-options></editor-options>',
       schemas: new Schemas([
         {
           group: 'metrics',

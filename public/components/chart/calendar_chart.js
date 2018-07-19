@@ -48,6 +48,7 @@ export class CalendarChart extends React.Component {
           height={this.state.height}
           ref={this.svg}
         >
+          <ChartTitle gridConfig={visConfig.get('grid')} label={vislibData.label} />
           {visConfig.get('categoryAxes').map((axisArgs, i) => (
             <CalendarAxis
               key={i}
@@ -58,7 +59,6 @@ export class CalendarChart extends React.Component {
             />
           ))}
           <ChartGrid type={visConfig.get('type')} gridConfig={visConfig.get('grid')} vislibData={vislibData} />
-          <ChartTitle gridConfig={visConfig.get('grid')} label={vislibData.label} />
         </svg>
       );
     }
@@ -69,7 +69,7 @@ export class CalendarChart extends React.Component {
         const svg = this.svg.current;
         this.setState({
           width: svg.getBoundingClientRect().width + xOffset,
-          height: svg.getBoundingClientRect().height + yOffset
+          height: svg.getBoundingClientRect().height + 3 * yOffset
         });
       }
     }

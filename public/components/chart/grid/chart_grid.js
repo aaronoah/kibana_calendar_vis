@@ -24,6 +24,7 @@ import moment from 'moment';
 import { GridConfig } from './grid_config';
 import { VIS_CHART_TYPE } from '../../../lib';
 import { getMonthInterval, getTimeFormat } from '../../../utils';
+import './chart_grid.less';
 
 export class ChartGrid extends React.Component {
   constructor(props) {

@@ -38,21 +38,6 @@ export function calendarVisualizationProvider(config) {
   const VisConfig = CalendarVisConfig;
   const Data = calendarDataObjectProvider(config);
   const CalendarDispatch = calendarDispatchProvider(config);
-  const bindAnchorEvent = function (e) {
-    const self = this;
-    self.anchorEvent = e;
-    new Promise((resolve) => {
-      self.renderDOM(<EuiTooltip
-        id={tooltipId}
-        formatter={self.tooltipFormatter}
-        dispatch={self.dispatch}
-        hashTable={self.hashTable}
-        renderComplete={resolve}
-        anchorEvent={self.anchorEvent}
-        container={self.calendarVis}
-      />, self.tooltipContainer);
-    });
-  };
 
   class CalendarVisualization {
     constructor(el, vis) {
@@ -67,7 +52,6 @@ export function calendarVisualizationProvider(config) {
       this.charts = [];
       this.visConfig = new VisConfig(vis.params);
       this.valueAxes = this.visConfig.get('valueAxes').map(axisConfig => new ValueAxis(this.visConfig, axisConfig, this.vis));
-      this.anchorEvent = null;
       this.tooltipContainer = null;
       this.legendNode = null;
       this.hashTable = new HashTable();
@@ -155,9 +139,24 @@ export function calendarVisualizationProvider(config) {
       });
     }
 
+    bindAnchorEvent(e) {
+      const self = this;
+      new Promise((resolve) => {
+        self.renderDOM(<EuiTooltip
+          id={tooltipId}
+          formatter={self.tooltipFormatter}
+          dispatch={self.dispatch}
+          hashTable={self.hashTable}
+          renderComplete={resolve}
+          anchorEvent={e}
+          container={self.calendarVis}
+        />, self.tooltipContainer);
+      });
+    }
+
     async _removeTooltip() {
-      this.calendarVis.removeEventListener('mouseover', bindAnchorEvent.bind(this, 'mouseover'));
-      this.calendarVis.removeEventListener('mouseout', bindAnchorEvent.bind(this, 'mouseout'));
+      this.calendarVis.removeEventListener('mouseover', this.anchorEventBinder);
+      this.calendarVis.removeEventListener('mouseout', this.anchorEventBinder);
       this.unmountDOM(this.tooltipContainer);
       if (this.container.contains(this.tooltipContainer)) {
         this.container.removeChild(this.tooltipContainer);
@@ -171,14 +170,21 @@ export function calendarVisualizationProvider(config) {
       this.tooltipContainer = document.createElement('div');
       this.tooltipContainer.className = tooltipName;
       this.container.appendChild(this.tooltipContainer);
-      this.calendarVis.addEventListener('mouseover', bindAnchorEvent.bind(this));
-      this.calendarVis.addEventListener('mouseout', bindAnchorEvent.bind(this));
+      this.anchorEventBinder = this.bindAnchorEvent.bind(this);
+      this.calendarVis.addEventListener('mouseover', this.anchorEventBinder);
+      this.calendarVis.addEventListener('mouseout', this.anchorEventBinder);
     }
 
     async _addCircleEvents(selection) {
       $(this.container).find('[data-label]').removeData('label');
       const hover = this.dispatch.addHoverEvent();
       const mouseout = this.dispatch.addMouseoutEvent();
+      return selection.call(hover).call(mouseout);
+    }
+
+    async _removeCircleEvents(selection) {
+      const hover = this.dispatch.removeHoverEvent();
+      const mouseout = this.dispatch.removeMouseoutEvent();
       return selection.call(hover).call(mouseout);
     }
 
@@ -200,12 +206,17 @@ export function calendarVisualizationProvider(config) {
         const addons = [];
         if (this.visConfig.get('enableHover')) {
           addons.push(this._addCircleEvents(d3.selectAll('.data-day')));
+        } else {
+          addons.push(this._removeCircleEvents(d3.selectAll('.data-day')));
+          $('[data-label]').css('opacity', '');
         }
         if (this.visConfig.get('addTooltip')) {
           if (this.tooltipContainer !== null) {
             await this._removeTooltip();
           }
           addons.push(this._renderTooltip(vislibData));
+        } else if (this.tooltipContainer !== null) {
+          addons.push(this._removeTooltip());
         }
         const addLegend = this.visConfig.get('addLegend');
         if (addLegend) {
@@ -213,6 +224,8 @@ export function calendarVisualizationProvider(config) {
             await this._removeLegend();
           }
           addons.push(this._renderLegend(vislibData));
+        } else if (this.legendNode !== null) {
+          addons.push(this._removeLegend());
         }
         await Promise.all(addons);
       }
@@ -258,6 +271,7 @@ export function calendarVisualizationProvider(config) {
         this._putAll(visData);
         this.dispatch.handler.removeError();
         const vislibData = new Data(visData, this.vis.getUiState());
+        this.visConfig.update(this.vis.params);
         return this._render(vislibData, updateStatus);
       } catch (error) {
         if (error instanceof KbnError) {

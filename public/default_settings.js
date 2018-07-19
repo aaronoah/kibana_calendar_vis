@@ -68,9 +68,6 @@ export const defaultParams = {
     },
     labels: {
       show: false,
-      rotate: 0,
-      overwriteColor: false,
-      color: '#555',
     }
   }],
   grid: {
