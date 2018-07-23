@@ -99,44 +99,4 @@ export class ChartGrid extends React.Component {
     }
   }
 
-  async _drawBoundaries(svg, { year, aggs, cellSize, xOffset, yOffset }) {
-    const type = this.props.type;
-
-    if(type === VIS_CHART_TYPE.HEATMAP_YEAR) {
-      const monthPath = (startFullDate) => {
-        return function (t) {
-          const t1 = new Date(t.getFullYear(), t.getMonth() + 1, 0);
-          const d0 = t.getDay();
-          const w0 = d3.time.weekOfYear(t) - d3.time.weekOfYear(startFullDate);
-          const d1 = t1.getDay();
-          const w1 = d3.time.weekOfYear(t1) - d3.time.weekOfYear(startFullDate);
-
-          return 'M' + (w0 + 1) * cellSize + ',' + d0 * cellSize +
-              'H' + w0 * cellSize + 'V' + 7 * cellSize +
-              'H' + w1 * cellSize + 'V' + (d1 + 1) * cellSize +
-              'H' + (w1 + 1) * cellSize + 'V' + 0 +
-              'H' + (w0 + 1) * cellSize + 'Z';
-        };
-      };
-
-      const [startMonth, endMonth] = this._getMonthInterval(aggs);
-      const startFullDate = new Date(parseInt(year), startMonth - 1, 1);
-
-      d3.select(svg).append('g')
-        .attr('id', 'month-bound')
-        .selectAll('.month')
-        .data(() => {
-          return d3.time.months(new Date(parseInt(year), startMonth - 1, 1),
-            new Date(parseInt(year), endMonth, 1));
-        })
-        .enter().append('path')
-        .attr('class', 'month')
-        .attr('transform', (d) => (
-          'translate(' + (moment(d).month() - startMonth + 1) * 1.5 * cellSize + (xOffset * 2) + ',' + (yOffset * 1.5) + ')'
-        ))
-        .attr('d', monthPath(startFullDate));
-    }
-
-  }
-
 }
