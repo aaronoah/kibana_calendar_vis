@@ -43,6 +43,7 @@ export const defaultParams = {
   colorsRange: [],
   invertColors: false,
   percentageMode: false,
+  locale: 'en_US',
   categoryAxes: [{
     id: 'CategoryAxis-1',
     type: 'category',

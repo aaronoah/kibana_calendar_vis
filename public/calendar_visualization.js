@@ -31,6 +31,7 @@ import { EuiTooltip } from './components/tooltip';
 import { HashTable, getTimeFormat } from './utils';
 import { InvalidBucketError } from './errors';
 import { containerName, chartCanvas, chartWrapperName, legendName, tooltipId, tooltipName } from './default_settings';
+import { momentLocales } from './i18n';
 import './calendar_visualization.less';
 
 export function calendarVisualizationProvider(config) {
@@ -190,8 +191,12 @@ export function calendarVisualizationProvider(config) {
 
     async _render(vislibData, updateStatus) {
       const { aggs, data, params, time, resize } = updateStatus;
+      const localeProvider = momentLocales[this.visConfig.get('locale')];
+      localeProvider({
+        enable: true
+      });
 
-      if((params && resize) || (data && time) || (data && !aggs && !params && !time && !resize)) {
+      if((params && resize) || (data && time) || (data && params) || (data && !aggs && !params && !time && !resize)) {
         if(this.container.contains(this.calendarVis)) {
           await this._unmountChart();
         }

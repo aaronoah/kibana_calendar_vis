@@ -1,13 +1,19 @@
 <div>
   <div class="kuiSideBarFormRow">
+    <label class="kuiSideBarFormRow__label" for="timeLocale">
+      Time Locale
+    </label>
+    <div class="kuiSideBarFormRow__control">
+      <select id="timeLocale" class="kuiSelect kuiSideBarSelect" ng-model="editorState.params.locale" ng-options="locale for locale in collections.locales"></select>
+    </div>
+  </div>
+
+  <div class="kuiSideBarFormRow">
     <label class="kuiSideBarFormRow__label" for="colorSchema">
       Color Schema
     </label>
     <div class="kuiSideBarFormRow__control">
       <select id="colorSchema" class="kuiSelect kuiSideBarSelect" ng-model="editorState.params.colorSchema" ng-options="mode for mode in collections.colorSchemas"></select>
-    </div>
-    <div class="text-info text-center" ng-show="customColors" ng-click="resetColors()" kbn-accessible-click>
-      reset colors
     </div>
   </div>
 

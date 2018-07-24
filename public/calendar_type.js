@@ -29,6 +29,7 @@ import { defaultFeedbackMessage } from 'ui/vis/default_feedback_message';
 import { calendarVisualizationProvider } from './calendar_visualization';
 import './components/editor/editor_options';
 import { defaultParams } from './default_settings';
+import { momentLocales } from './i18n';
 
 VisTypesRegistryProvider.register((Private, config) => {
   const VisFactory = Private(VisFactoryProvider);
@@ -72,6 +73,7 @@ VisTypesRegistryProvider.register((Private, config) => {
           text: 'bottom',
         }],
         colorSchemas: Object.keys(vislibColorMaps),
+        locales: Object.keys(momentLocales)
       },
       optionsTemplate: '<editor-options></editor-options>',
       schemas: new Schemas([

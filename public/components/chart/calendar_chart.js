@@ -58,7 +58,12 @@ export class CalendarChart extends React.Component {
               vislibData={vislibData}
             />
           ))}
-          <ChartGrid type={visConfig.get('type')} gridConfig={visConfig.get('grid')} vislibData={vislibData} />
+          <ChartGrid
+            type={visConfig.get('type')}
+            gridConfig={visConfig.get('grid')}
+            vislibData={vislibData}
+            axes={visConfig.get('categoryAxes')}
+          />
         </svg>
       );
     }

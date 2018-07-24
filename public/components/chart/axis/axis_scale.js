@@ -35,15 +35,6 @@ export const getNumericMonth = (month, year) => {
   return -1;
 };
 
-const AXIS_VALUES = {
-  MONTHS: [
-    'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
-  ],
-  WEEKS: [
-    'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
-  ]
-};
-
 export class CalendarAxisScale {
   constructor(axisConfig) {
     this.axisConfig = axisConfig;
@@ -51,8 +42,21 @@ export class CalendarAxisScale {
 
     if(this.type === 'category') {
       this.scaleType = this.axisConfig.get('scale.type');
-      const vals = AXIS_VALUES[this.scaleType];
-      this.values = vals.map(val => val.slice(0, this.axisConfig.get('labels.truncate')));
+      const isShort = this.axisConfig.get('labels.truncate');
+      this.values = [];
+      if (this.scaleType === AXIS_SCALE_TYPE.MONTHS) {
+        if (isShort) {
+          this.values = moment.monthsShort();
+        } else {
+          this.values = moment.months();
+        }
+      } else if (this.scaleType === AXIS_SCALE_TYPE.WEEKS) {
+        if (isShort) {
+          this.values = moment.weekdaysShort();
+        } else {
+          this.values = moment.weekdays();
+        }
+      }
     }
   }
 
@@ -70,9 +74,9 @@ export class CalendarAxisScale {
     if(this.type === 'category') {
       const { values } = data.series[0];
       const startDate = _.head(values).x;
-      if(this.scaleType === 'MONTHS') {
+      if(this.scaleType === AXIS_SCALE_TYPE.MONTHS) {
         return moment(startDate).format(getMonthFormat());
-      } else if(this.scaleType === 'WEEKS') {
+      } else if(this.scaleType === AXIS_SCALE_TYPE.WEEKS) {
         return moment(startDate).format(getWeekdayFormat());
       } else {
         throw new TypeError(`invalid scale type: ${this.scaleType}`);
@@ -92,9 +96,9 @@ export class CalendarAxisScale {
     if (this.type === 'category') {
       const { values } = data.series[0];
       const endDate = _.last(values).x;
-      if (this.scaleType === 'MONTHS') {
+      if (this.scaleType === AXIS_SCALE_TYPE.MONTHS) {
         return moment(endDate).format(getMonthFormat());
-      } else if (this.scaleType === 'WEEKS') {
+      } else if (this.scaleType === AXIS_SCALE_TYPE.WEEKS) {
         return moment(endDate).format(getWeekdayFormat());
       } else {
         throw new TypeError(`invalid scale type: ${this.scaleType}`);

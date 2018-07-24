@@ -25,7 +25,7 @@ import { AXIS_SCALE_TYPE } from './axis_scale';
 const DEFAULT_AXIS_CONFIG = {
   show: true,
   labels: {
-    truncate: 3
+    truncate: true
   }
 };
 

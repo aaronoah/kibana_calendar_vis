@@ -89,10 +89,10 @@ export class ChartGrid extends React.Component {
         .attr('height', cellSize)
         .attr('x', (d) => {
           return (moment(d).month() - startMonth + 1) * 1.5 * cellSize +
-            xOffset * 2 + ((d3.time.weekOfYear(d) - d3.time.weekOfYear(startFullDate)) * cellSize);
+            xOffset * 2 + ((moment(d).week() - moment(startFullDate).week()) * cellSize);
         })
         .attr('y', (d) => {
-          return yOffset * 3 + (d.getDay() * cellSize);
+          return yOffset * 3 + (moment(d).weekday() * cellSize);
         })
         .attr('rx', cellSize * 1 / 10)
         .attr('ry', cellSize * 1 / 10);

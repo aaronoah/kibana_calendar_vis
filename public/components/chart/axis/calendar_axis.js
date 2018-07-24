@@ -19,6 +19,7 @@
 
 import React from 'react';
 import d3 from 'd3';
+import moment from 'moment';
 import { AxisConfig } from './axis_config';
 import { AXIS_SCALE_TYPE, CalendarAxisScale, getNumericMonth } from './axis_scale';
 
@@ -84,7 +85,7 @@ export class CalendarAxis extends React.Component {
       for(let i = sMonth; i <= eMonth; ++i) {
         const pad = cellSize * (
           (i - sMonth) * 1.5 +
-          (d3.time.weekOfYear(new Date(year, i - 1, 1)) - d3.time.weekOfYear(new Date(year, sMonth - 1, 1)))
+          (moment(new Date(year, i - 1, 1)).week() - moment(new Date(year, sMonth - 1, 1)).week())
         );
         monthLeftPad.push(pad);
       }
