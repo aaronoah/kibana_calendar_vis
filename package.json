@@ -1,10 +1,10 @@
 {
   "name": "kibana_calendar_vis",
-  "version": "0.0.0",
+  "version": "6.4.0",
   "description": "A calendar heatmap visualization in Kibana Visualize app",
   "main": "index.js",
   "kibana": {
-    "version": "6.5.0",
+    "version": "6.4.0",
     "templateVersion": "1.0.0"
   },
   "license": "Apache-2.0",
