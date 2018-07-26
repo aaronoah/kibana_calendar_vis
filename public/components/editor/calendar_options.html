@@ -1,10 +1,10 @@
 <div>
   <div class="kuiSideBarFormRow">
-    <label class="kuiSideBarFormRow__label" for="timeLocale">
-      Time Locale
+    <label class="kuiSideBarFormRow__label" for="firstDayOfWeek">
+      First day of the week
     </label>
     <div class="kuiSideBarFormRow__control">
-      <select id="timeLocale" class="kuiSelect kuiSideBarSelect" ng-model="editorState.params.locale" ng-options="locale for locale in collections.locales"></select>
+      <select id="firstDayOfWeek" class="kuiSelect kuiSideBarSelect" ng-model="firstDayOfWeek" ng-options="day for day in startingDay"></select>
     </div>
   </div>
 

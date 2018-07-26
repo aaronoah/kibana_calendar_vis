@@ -22,7 +22,7 @@ import moment from 'moment';
 export function localeUKProvider({ enable }) {
 
   if (enable && moment.locale() !== 'en-GB-calendar') {
-    moment.locale('en-GB-calendar', {
+    moment.updateLocale('en-GB-calendar', {
       months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
       monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
       monthsParseExact: true,

@@ -40,6 +40,7 @@ import {
   defaultParams
 } from '../default_settings';
 import aggResponse from './agg_response.json';
+import './hack';
 
 describe('CalendarVisualizations', () => {
 

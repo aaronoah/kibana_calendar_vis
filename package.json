@@ -4,7 +4,7 @@
   "description": "A calendar heatmap visualization in Kibana Visualize app",
   "main": "index.js",
   "kibana": {
-    "version": "6.4.0",
+    "version": "6.5.0",
     "templateVersion": "1.0.0"
   },
   "license": "Apache-2.0",
@@ -13,8 +13,10 @@
     "kbn": "node ../../kibana/scripts/kbn",
     "lint": "eslint .",
     "start": "plugin-helpers start",
-    "test:server": "plugin-helpers test:server",
+    "test": "yarn test:browser && yarn test:jest && yarn test:functionalTests",
     "test:browser": "plugin-helpers test:browser",
+    "test:jest": "node scripts/jest",
+    "test:functionalTests": "node scripts/functional_tests",
     "build": "plugin-helpers build",
     "backport": "backport"
   },

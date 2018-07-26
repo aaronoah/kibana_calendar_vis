@@ -75,6 +75,7 @@ exports[`LegendBar should collapse and expand when click the arrow 1`] = `
               ],
             },
             "legendPosition": "right",
+            "locale": "en_US",
             "percentageMode": false,
             "setColorRange": false,
             "style": Object {
@@ -91,9 +92,6 @@ exports[`LegendBar should collapse and expand when click the arrow 1`] = `
               Object {
                 "id": "ValueAxis-1",
                 "labels": Object {
-                  "color": "#555",
-                  "overwriteColor": false,
-                  "rotate": 0,
                   "show": false,
                 },
                 "scale": Object {
@@ -202,6 +200,7 @@ exports[`LegendBar should render a full LegendBar component, default position to
               ],
             },
             "legendPosition": "right",
+            "locale": "en_US",
             "percentageMode": false,
             "setColorRange": false,
             "style": Object {
@@ -218,9 +217,6 @@ exports[`LegendBar should render a full LegendBar component, default position to
               Object {
                 "id": "ValueAxis-1",
                 "labels": Object {
-                  "color": "#555",
-                  "overwriteColor": false,
-                  "rotate": 0,
                   "show": false,
                 },
                 "scale": Object {

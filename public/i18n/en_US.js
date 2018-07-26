@@ -22,7 +22,7 @@ import moment from 'moment';
 export function localeUSProvider({ enable }) {
 
   if (enable && moment.locale() !== 'en-US-calendar') {
-    moment.locale('en-US-calendar', {
+    moment.updateLocale('en-US-calendar', {
       months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
       monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
       monthsParseExact: true,

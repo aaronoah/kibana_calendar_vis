@@ -30,6 +30,29 @@ uiModules.get('kibana')
 
         $scope.collections = $scope.vis.type.editorConfig.collections;
 
+        const startingDay = [];
+        if ($scope.editorState.params.locale === 'en_US') {
+          $scope.firstDayOfWeek = 'Sunday';
+        } else if ($scope.editorState.params.locale === 'en_GB') {
+          $scope.firstDayOfWeek = 'Monday';
+        }
+        $scope.collections.locales.forEach(locale => {
+          if (locale === 'en_GB') {
+            startingDay.push('Monday');
+          } else if (locale === 'en_US') {
+            startingDay.push('Sunday');
+          }
+        });
+        $scope.startingDay = startingDay;
+
+        $scope.$watch('firstDayOfWeek', () => {
+          if ($scope.firstDayOfWeek === 'Monday') {
+            $scope.editorState.params.locale = 'en_GB';
+          } else if ($scope.firstDayOfWeek === 'Sunday') {
+            $scope.editorState.params.locale = 'en_US';
+          }
+        });
+
         $scope.showColorRange = false;
         $scope.showLabels = false;
         $scope.customColors = false;
