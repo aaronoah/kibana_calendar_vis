@@ -6,13 +6,19 @@ A calendar heatmap visualization in Kibana Visualize app
 
 ## Installation
 
-The plugin is on alpha and not be available to provide a release at the moment. You can still clone the repo locally to see how it works.
+Copy installation file's url as same version of your kibana from [the repository releases](https://github.com/aaronoah/kibana_calendar_vis/releases).
+
+And
+```bash
+$ cd path/to/your/kibana
+$ bin/kibana-plugin install <installation file's url>
+```
 
 ### Compatibility
 
-Kibana v6.4 and onwards
+The minimum supported version of Kibana is version 6.4.0.
 
-## development
+## Development
 
 Be sure to clone `kibana_calendar_vis` under a folder `kibana_extra` that is in parallel to `kibana` in order to properly link scripts and tests.
 
@@ -36,12 +42,20 @@ See the [kibana contributing guide](https://github.com/elastic/kibana/blob/maste
 
     Build a distributable archive of your plugin.
 
-  - `yarn test:browser`
+  - `yarn test`
 
-    Run the browser tests in a real web browser.
+    Run all tests.
 
-  - `yarn test:server`
+    - `yarn test:browser`
 
-    Run the server tests using mocha.
+      Run the browser tests in a real web browser.
+
+    - `yarn test:jest`
+
+      Run jest tests in command line.
+
+    - `yarn test:functionalTests`
+
+      Run functional tests in command line and a real browser.
 
 For more information about any of these commands run `yarn ${task} --help`. For a full list of tasks checkout the `package.json` file, or run `yarn run`.
