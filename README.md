@@ -2,7 +2,13 @@
 
 A calendar heatmap visualization in Kibana Visualize app
 
+> Edit Data aggregations to see how it behaves when the Metric aggregation changes, view the tooltip attached to each cell.
+
 ![Demo](demo.gif)
+
+> Edit Options to see how it changes in terms of legends, etc. view the highlight feature.
+
+![Demo2](demo2.gif)
 
 ## Installation
 
