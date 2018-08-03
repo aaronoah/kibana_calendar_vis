@@ -122,7 +122,7 @@ export class ValueAxis {
       yrData.forEach(v => {
         const id = '#day_' + moment(v.x).format(getTimeFormat());
         d3.select(id)
-          .attr('class', 'data-day')
+          .classed('data-day', true)
           .attr('data-label', label(v))
           .style('fill', z(v));
       });

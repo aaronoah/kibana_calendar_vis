@@ -24,7 +24,7 @@ import moment from 'moment';
 import { render, unmountComponentAtNode } from 'react-dom';
 import { CalendarChart } from './components/chart/calendar_chart';
 import { legendPosition, LegendBar } from './components/legend';
-import { CalendarVisConfig, calendarDataObjectProvider, calendarDispatchProvider, CalendarErrorHandler } from './lib';
+import { CalendarVisConfig, calendarDataObjectProvider, Dispatcher, CalendarErrorHandler } from './lib';
 import { ValueAxis } from './components/chart/axis/value_axis';
 import { KbnError, NoResults, SearchTimeout } from 'ui/errors';
 import { EuiTooltip } from './components/tooltip';
@@ -32,13 +32,13 @@ import { HashTable, getTimeFormat } from './utils';
 import { InvalidBucketError } from './errors';
 import { containerName, chartCanvas, chartWrapperName, legendName, tooltipId, tooltipName } from './default_settings';
 import { momentLocales } from './i18n';
+import { highlight, unHighlight } from './lib/events';
 import './calendar_visualization.less';
 
 export function calendarVisualizationProvider(config) {
 
   const VisConfig = CalendarVisConfig;
   const Data = calendarDataObjectProvider(config);
-  const CalendarDispatch = calendarDispatchProvider(config);
 
   class CalendarVisualization {
     constructor(el, vis) {
@@ -47,7 +47,9 @@ export function calendarVisualizationProvider(config) {
       this.container = document.createElement('div');
       this.container.className = containerName;
       this.el.appendChild(this.container);
-      this.dispatch = new CalendarDispatch(CalendarErrorHandler.bindEl(this.container));
+      CalendarErrorHandler.bindEl(this.container);
+      this.dispatcher = new Dispatcher();
+      this.dispatcher.addConfig(config).addContainer(this.container);
       this.calendarVis = document.createElement('div');
       this.calendarVis.className = chartCanvas;
       this.charts = [];
@@ -132,7 +134,7 @@ export function calendarVisualizationProvider(config) {
           visConfig={self.visConfig}
           colorFunc={vislibData.getColorFunc()}
           position={legendPosition[self.vis.params.legendPosition]}
-          dispatch={self.dispatch}
+          dispatcher={self.dispatcher}
           setUiState={setUiState}
           getUiState={getUiState}
           renderComplete={resolve}
@@ -146,7 +148,6 @@ export function calendarVisualizationProvider(config) {
         self.renderDOM(<EuiTooltip
           id={tooltipId}
           formatter={self.tooltipFormatter}
-          dispatch={self.dispatch}
           hashTable={self.hashTable}
           renderComplete={resolve}
           anchorEvent={e}
@@ -176,17 +177,31 @@ export function calendarVisualizationProvider(config) {
       this.calendarVis.addEventListener('mouseout', this.anchorEventBinder);
     }
 
-    async _addCircleEvents(selection) {
-      $(this.container).find('[data-label]').removeData('label');
-      const hover = this.dispatch.addHoverEvent();
-      const mouseout = this.dispatch.addMouseoutEvent();
-      return selection.call(hover).call(mouseout);
+    async _addHoverEvents() {
+      this.dispatcher
+        .newMapping()
+        .addSource('.month-label')
+        .addDataTarget('[data-month]')
+        .addEvent('mouseenter', highlight)
+        .addEvent('mouseleave', unHighlight);
+
+      this.dispatcher
+        .newMapping()
+        .addDataTarget('[data-label]')
+        .addEvent('mouseenter', highlight)
+        .addEvent('mouseleave', unHighlight);
     }
 
-    async _removeCircleEvents(selection) {
-      const hover = this.dispatch.removeHoverEvent();
-      const mouseout = this.dispatch.removeMouseoutEvent();
-      return selection.call(hover).call(mouseout);
+    async _removeHoverEvents() {
+      this.dispatcher
+        .newMapping()
+        .addDataTarget('[data-month]')
+        .removeEvent('mouseenter').removeEvent('mouseleave');
+
+      this.dispatcher
+        .newMapping()
+        .addDataTarget('[data-label]')
+        .removeEvent('mouseenter').removeEvent('mouseleave');
     }
 
     async _render(vislibData, updateStatus) {
@@ -210,9 +225,9 @@ export function calendarVisualizationProvider(config) {
         await renderValues;
         const addons = [];
         if (this.visConfig.get('enableHover')) {
-          addons.push(this._addCircleEvents(d3.selectAll('.data-day')));
+          addons.push(this._addHoverEvents());
         } else {
-          addons.push(this._removeCircleEvents(d3.selectAll('.data-day')));
+          addons.push(this._removeHoverEvents());
           $('[data-label]').css('opacity', '');
         }
         if (this.visConfig.get('addTooltip')) {
@@ -274,7 +289,7 @@ export function calendarVisualizationProvider(config) {
         this._validateData(visData);
         this.hashTable.clearAll();
         this._putAll(visData);
-        this.dispatch.handler.removeError();
+        CalendarErrorHandler.removeError();
         const vislibData = new Data(visData, this.vis.getUiState());
         this.visConfig.update(this.vis.params);
         return this._render(vislibData, updateStatus);
@@ -282,7 +297,7 @@ export function calendarVisualizationProvider(config) {
         if (error instanceof KbnError) {
           return new Promise(async (resolve) => {
             await self.destroy();
-            error.displayToScreen(this.dispatch.handler);
+            error.displayToScreen(CalendarErrorHandler);
             resolve();
           });
         } else {

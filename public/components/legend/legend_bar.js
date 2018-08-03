@@ -21,6 +21,7 @@ import _ from 'lodash';
 import React from 'react';
 import { Legend } from './legend';
 import { legendPosition } from './index';
+import { highlight, unHighlight } from '../../lib/events';
 
 export class LegendBar extends React.Component {
 
@@ -36,6 +37,8 @@ export class LegendBar extends React.Component {
         label: 'loading ...'
       }]
     };
+    const { dispatcher } = this.props;
+    dispatcher.newMapping().addDataTarget('[data-label]');
   }
 
   _accommodateContainer() {
@@ -62,19 +65,21 @@ export class LegendBar extends React.Component {
     this.props.setUiState('vis.legendOpen', toggleState);
   }
 
-  highlight(ev) {
-    if(this.state.enableHover) {
-      const item = ev.currentTarget;
-      const { dispatch } = this.props;
-      dispatch.highlight.call(item, dispatch.handler.el);
+  highlight() {
+    const { dispatcher } = this.props;
+    if (this.state.enableHover) {
+      dispatcher.addEvent('mouseenter', highlight);
+    } else {
+      dispatcher.removeEvent('mouseenter');
     }
   }
 
-  unHighlight(ev) {
-    if(this.state.enableHover) {
-      const item = ev.currentTarget;
-      const { dispatch } = this.props;
-      dispatch.unHighlight.call(item, dispatch.handler.el);
+  unHighlight() {
+    const { dispatcher } = this.props;
+    if (this.state.enableHover) {
+      dispatcher.addEvent('mouseleave', unHighlight);
+    } else {
+      dispatcher.removeEvent('mouseleave');
     }
   }
 

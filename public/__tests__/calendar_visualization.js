@@ -224,19 +224,18 @@ describe('CalendarVisualizations', () => {
       calendarVis = new CalendarVisualization(domNode, vis);
       await calendarVis.render(visData, updateStatus);
 
-      sinon.spy(calendarVis.dispatch, 'highlight');
-      sinon.spy(calendarVis.dispatch, 'unHighlight');
+      sinon.spy(calendarVis.dispatcher, 'addEvent');
 
       const canvas = domNode.querySelector(`.${chartCanvas.split(' ')[1]}`);
       const dataCell = canvas.querySelector('.data-day');
 
 
       $(dataCell).mouseover(() => {
-        expect(calendarVis.dispatch.highlight.calledOnce).to.equal(true);
+        expect(calendarVis.dispatcher.addEvent.calledOnce).to.equal(true);
       });
 
       $(dataCell).mouseout(() => {
-        expect(calendarVis.dispatch.unHighlight.calledOnce).to.equal(true);
+        expect(calendarVis.dispatcher.addEvent.calledTwice).to.equal(true);
       });
 
     });

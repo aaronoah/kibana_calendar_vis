@@ -24,7 +24,7 @@ import { LegendBar } from './legend_bar';
 import { legendPosition } from './';
 import { CalendarVisConfig, CalendarErrorHandler } from '../../lib';
 import { calendarDataObjectProvider } from '../../lib/data_object/calendar_data';
-import { calendarDispatchProvider } from '../../lib/calendar_dispatch';
+import { Dispatcher } from '../../lib/dispatcher';
 import aggResponse from '../../__tests__/agg_response.json';
 import colorMap from '../../__tests__/colormap.json';
 import { containerName, legendName, defaultParams } from '../../default_settings';
@@ -34,8 +34,7 @@ describe('LegendBar', () => {
   let visConfig;
   let DataObject;
   let vislibData;
-  let Dispatch;
-  let dispatch;
+  let dispatcher;
   let visData;
   const fakeConfig = {
     get(key) {
@@ -79,15 +78,14 @@ describe('LegendBar', () => {
 
     DataObject = calendarDataObjectProvider(fakeConfig);
     vislibData = new DataObject(visData, fakeUiState);
-    Dispatch = calendarDispatchProvider(fakeConfig);
-    dispatch = new Dispatch(CalendarErrorHandler.bindEl(document.createElement('div')));
+    dispatcher = new Dispatcher(CalendarErrorHandler.bindEl(document.createElement('div')));
+    dispatcher.addConfig(fakeConfig);
   });
 
   afterEach(() => {
     visData = null;
     visConfig = null;
     vislibData = null;
-    dispatch = null;
   });
 
   it('should render a full LegendBar component, default position to the right', () => {
@@ -100,7 +98,7 @@ describe('LegendBar', () => {
             visConfig={visConfig}
             colorFunc={vislibData.getColorFunc()}
             position={legendPosition[defaultParams.legendPosition]}
-            dispatch={dispatch}
+            dispatcher={dispatcher}
             setUiState={setUiState}
             getUiState={getUiState}
             renderComplete={renderComplete}
@@ -123,7 +121,7 @@ describe('LegendBar', () => {
             visConfig={visConfig}
             colorFunc={vislibData.getColorFunc()}
             position={legendPosition[defaultParams.legendPosition]}
-            dispatch={dispatch}
+            dispatcher={dispatcher}
             setUiState={setUiState}
             getUiState={getUiState}
             renderComplete={jest.fn()}
@@ -140,10 +138,9 @@ describe('LegendBar', () => {
     legendBarWrapper.unmount();
   });
 
-  it('should dim and undim the data labels when mouseover the legends', () => {
-    sinon.spy(dispatch, 'highlight');
-    sinon.spy(dispatch, 'unHighlight');
+  it('should dim and undim the data labels when mouseover and mouseout the legends', () => {
     visConfig.set('enableHover', true);
+    sinon.spy(dispatcher, 'addEvent');
     const legendBarWrapper = mount(
       <div className={containerName}>
         <div className={legendName}>
@@ -151,7 +148,7 @@ describe('LegendBar', () => {
             visConfig={visConfig}
             colorFunc={vislibData.getColorFunc()}
             position={legendPosition[defaultParams.legendPosition]}
-            dispatch={dispatch}
+            dispatcher={dispatcher}
             setUiState={setUiState}
             getUiState={getUiState}
             renderComplete={jest.fn()}
@@ -160,9 +157,9 @@ describe('LegendBar', () => {
       </div>
     );
     legendBarWrapper.find('li.legend-value').at(0).simulate('mouseenter');
-    expect(dispatch.highlight.calledOnce).toEqual(true);
+    expect(dispatcher.addEvent.calledOnce).toEqual(true);
     legendBarWrapper.find('li.legend-value').at(0).simulate('mouseleave');
-    expect(dispatch.unHighlight.calledOnce).toEqual(true);
+    expect(dispatcher.addEvent.calledTwice).toEqual(true);
     legendBarWrapper.unmount();
   });
 

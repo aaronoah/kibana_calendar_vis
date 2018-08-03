@@ -32,6 +32,13 @@ const positionsToClassNameMap = {
 
 const defaultPosition = 'top';
 
+function eventResponse(d) {
+  return {
+    datum: d,
+    value: +d.y
+  };
+}
+
 export class EuiTooltip extends React.Component {
   constructor(props) {
     super(props);
@@ -59,10 +66,7 @@ export class EuiTooltip extends React.Component {
   }
 
   static getDerivedStateFromProps(props) {
-    const { dispatch, anchorEvent, hashTable, formatter } = props;
-    if (dispatch === null) {
-      throw new Error('dispatch object missing');
-    }
+    const { anchorEvent, hashTable, formatter } = props;
     const { target } = anchorEvent;
 
     if (hashTable.get(target.id)) {
@@ -71,7 +75,7 @@ export class EuiTooltip extends React.Component {
         return {
           show: true,
           content: {
-            __html: formatter(dispatch.eventResponse(val))
+            __html: formatter(eventResponse(val))
           }
         };
       }else if (anchorEvent.type === 'mouseout') {

@@ -6,6 +6,7 @@ exports[`CalendarAxis - default should render a month axis 1`] = `
 >
   <text
     class="month-label"
+    data-month="7"
     style="font-size: 12;"
     x="85"
     y="50"

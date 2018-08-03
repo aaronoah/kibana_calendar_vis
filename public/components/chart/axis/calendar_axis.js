@@ -21,7 +21,8 @@ import React from 'react';
 import d3 from 'd3';
 import moment from 'moment';
 import { AxisConfig } from './axis_config';
-import { AXIS_SCALE_TYPE, CalendarAxisScale, getNumericMonth } from './axis_scale';
+import { AXIS_SCALE_TYPE, CalendarAxisScale } from './axis_scale';
+import './calendar_axis.less';
 
 export class CalendarAxis extends React.Component {
   constructor(props) {
@@ -78,10 +79,12 @@ export class CalendarAxis extends React.Component {
 
       const monthLeftPad = [];
       const [startMonth, endMonth] = this.axisScale.getExtents(vislibData);
-      const sMonth = getNumericMonth(startMonth, year);
-      const eMonth = getNumericMonth(endMonth, year);
+      // console.log(startMonth + '\n');
+      // console.log(endMonth + '\n');
+      const sMonth = this.axisScale.getNumericScale(startMonth);
+      const eMonth = this.axisScale.getNumericScale(endMonth);
+      this.axisScale.setExtents({ scaleMin: startMonth, scaleMax: endMonth });
 
-      const valArray = this.axisScale.values.filter((val, i) => i >= sMonth - 1 && i <= eMonth - 1);
       for(let i = sMonth; i <= eMonth; ++i) {
         const pad = cellSize * (
           (i - sMonth) * 1.5 +
@@ -89,9 +92,14 @@ export class CalendarAxis extends React.Component {
         );
         monthLeftPad.push(pad);
       }
-      valArray.forEach((d, i) => {
+
+      // console.log(monthLeftPad.length + '\n');
+      // console.log(this.axisScale.extents.length);
+
+      this.axisScale.extents.forEach((d, i) => {
         monthLabels.append('text')
           .attr('class', 'month-label')
+          .attr('data-month', `${sMonth + i}`)
           .attr('x', monthLeftPad[i] + padding + xOffset * 2)
           .attr('y', yOffset * 2.5)
           .style('font-size', cellSize * 4 / 5)
@@ -106,7 +114,7 @@ export class CalendarAxis extends React.Component {
     if(type === AXIS_SCALE_TYPE.WEEKS) {
       const dayLabels = d3.select(this.axis.current);
 
-      this.axisScale.values.forEach(function (d, i) {
+      this.axisScale.extents.forEach(function (d, i) {
         dayLabels.append('text')
           .attr('class', 'day-label')
           .attr('y', () => (yOffset * 3.1) + ((i + 0.4) * padding))

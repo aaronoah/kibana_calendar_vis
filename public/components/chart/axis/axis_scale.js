@@ -20,19 +20,11 @@
 import d3 from 'd3';
 import _ from 'lodash';
 import moment from 'moment';
-import { getMonthFormat, getWeekdayFormat } from '../../../utils';
+import { getMonthFormat, getWeekdayFormat, getMonthShortFormat, getWeekdayShortFormat } from '../../../utils';
 
 export const AXIS_SCALE_TYPE = {
   MONTHS: 'MONTHS',
   WEEKS: 'WEEKS'
-};
-
-export const getNumericMonth = (month, year) => {
-  const d = Date.parse(month + ' 1, ' + year);
-  if (!isNaN(d)) {
-    return new Date(d).getMonth() + 1;
-  }
-  return -1;
 };
 
 export class CalendarAxisScale {
@@ -43,18 +35,18 @@ export class CalendarAxisScale {
     if(this.type === 'category') {
       this.scaleType = this.axisConfig.get('scale.type');
       const isShort = this.axisConfig.get('labels.truncate');
-      this.values = [];
+      this.extents = [];
       if (this.scaleType === AXIS_SCALE_TYPE.MONTHS) {
         if (isShort) {
-          this.values = moment.monthsShort();
+          this.extents = moment.monthsShort();
         } else {
-          this.values = moment.months();
+          this.extents = moment.months();
         }
       } else if (this.scaleType === AXIS_SCALE_TYPE.WEEKS) {
         if (isShort) {
-          this.values = moment.weekdaysShort();
+          this.extents = moment.weekdaysShort();
         } else {
-          this.values = moment.weekdays();
+          this.extents = moment.weekdays();
         }
       }
     }
@@ -70,14 +62,35 @@ export class CalendarAxisScale {
     }
   }
 
+  getNumericScale(scale) {
+    return this.extents.indexOf(scale) + 1;
+  }
+
+  setExtents({ scaleMin, scaleMax }) {
+    let isSelected = false;
+    this.extents = this.extents.filter(value => {
+      if (value === scaleMin) {
+        isSelected = true;
+      }
+      if (value === scaleMax) {
+        isSelected = false;
+        return true;
+      }
+      return isSelected;
+    });
+  }
+
   getScaleMin(data) {
     if(this.type === 'category') {
       const { values } = data.series[0];
       const startDate = _.head(values).x;
+      const isShort = this.axisConfig.get('labels.truncate');
       if(this.scaleType === AXIS_SCALE_TYPE.MONTHS) {
-        return moment(startDate).format(getMonthFormat());
+        const formatter = isShort ? getMonthShortFormat() : getMonthFormat();
+        return moment(startDate).format(formatter);
       } else if(this.scaleType === AXIS_SCALE_TYPE.WEEKS) {
-        return moment(startDate).format(getWeekdayFormat());
+        const formatter = isShort ? getWeekdayShortFormat() : getWeekdayFormat();
+        return moment(startDate).format(formatter);
       } else {
         throw new TypeError(`invalid scale type: ${this.scaleType}`);
       }
@@ -96,10 +109,13 @@ export class CalendarAxisScale {
     if (this.type === 'category') {
       const { values } = data.series[0];
       const endDate = _.last(values).x;
+      const isShort = this.axisConfig.get('labels.truncate');
       if (this.scaleType === AXIS_SCALE_TYPE.MONTHS) {
-        return moment(endDate).format(getMonthFormat());
+        const formatter = isShort ? getMonthShortFormat() : getMonthFormat();
+        return moment(endDate).format(formatter);
       } else if (this.scaleType === AXIS_SCALE_TYPE.WEEKS) {
-        return moment(endDate).format(getWeekdayFormat());
+        const formatter = isShort ? getWeekdayShortFormat() : getWeekdayFormat();
+        return moment(endDate).format(formatter);
       } else {
         throw new TypeError(`invalid scale type: ${this.scaleType}`);
       }

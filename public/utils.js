@@ -32,7 +32,11 @@ export const getTimeFormat = () => 'MM-DD-YYYY';
 
 export const getMonthFormat = () => 'MMMM';
 
+export const getMonthShortFormat = () => 'MMM';
+
 export const getWeekdayFormat = () => 'dddd';
+
+export const getWeekdayShortFormat = () => 'ddd';
 
 export class HashTable {
   constructor(configurable = true) {

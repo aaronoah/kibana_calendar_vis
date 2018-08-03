@@ -84,7 +84,8 @@ export class ChartGrid extends React.Component {
         .attr('id', (d) => {
           return 'day_' + moment(d).format(getTimeFormat());
         })
-        .attr('class', 'day')
+        .classed('day', true)
+        .attr('data-month', (d) => `${moment(d).month() + 1}`)
         .attr('width', cellSize)
         .attr('height', cellSize)
         .attr('x', (d) => {

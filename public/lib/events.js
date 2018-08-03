@@ -17,19 +17,25 @@
  * under the License.
  */
 
-import { BaseConfig } from './base_config';
-import { CalendarVisConfig, VIS_CHART_TYPE } from './calendar_vis_config';
-import { Dispatcher } from './dispatcher';
-import { calendarDataObjectProvider } from './data_object/calendar_data';
-import { errorContainer, CalendarErrorHandler } from './error_handler';
+import $ from 'jquery';
 
-export {
-  VIS_CHART_TYPE,
-  BaseConfig,
-  CalendarVisConfig,
-  calendarDataObjectProvider,
-  Dispatcher,
-  errorContainer,
-  CalendarErrorHandler
-};
+export function highlight(config, container, dataTarget) {
+  const label = this.getAttribute(dataTarget.replace(/\=".*"/, '').slice(1, -1));
 
+  function justifyOpacity(opacity) {
+    const decimalNumber = parseFloat(opacity, 10);
+    const fallbackOpacity = 0.5;
+    return (0 <= decimalNumber && decimalNumber <= 1) ? decimalNumber : fallbackOpacity;
+  }
+
+  const dimming = config.get('visualization:dimmingOpacity');
+  $(container).find(dataTarget)
+    .css('opacity', 1)
+    .not((els, el) => el.getAttribute(dataTarget.slice(1, -1)) === label)
+    .css('opacity', justifyOpacity(dimming));
+}
+
+export function unHighlight(config, container, dataTarget) {
+  const div = $(container);
+  $(dataTarget, div).css('opacity', '');
+}

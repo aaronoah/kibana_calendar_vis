@@ -7,6 +7,7 @@ exports[`ChartGrid - default should render a full year overview chart grid 1`] =
   <g>
     <rect
       class="day"
+      data-month="7"
       height="15"
       id="day_07-01-2018"
       rx="1.5"
@@ -19,6 +20,7 @@ exports[`ChartGrid - default should render a full year overview chart grid 1`] =
   <g>
     <rect
       class="day"
+      data-month="7"
       height="15"
       id="day_07-02-2018"
       rx="1.5"
@@ -31,6 +33,7 @@ exports[`ChartGrid - default should render a full year overview chart grid 1`] =
   <g>
     <rect
       class="day"
+      data-month="7"
       height="15"
       id="day_07-03-2018"
       rx="1.5"
@@ -43,6 +46,7 @@ exports[`ChartGrid - default should render a full year overview chart grid 1`] =
   <g>
     <rect
       class="day"
+      data-month="7"
       height="15"
       id="day_07-04-2018"
       rx="1.5"
@@ -55,6 +59,7 @@ exports[`ChartGrid - default should render a full year overview chart grid 1`] =
   <g>
     <rect
       class="day"
+      data-month="7"
       height="15"
       id="day_07-05-2018"
       rx="1.5"
@@ -67,6 +72,7 @@ exports[`ChartGrid - default should render a full year overview chart grid 1`] =
   <g>
     <rect
       class="day"
+      data-month="7"
       height="15"
       id="day_07-06-2018"
       rx="1.5"
@@ -79,6 +85,7 @@ exports[`ChartGrid - default should render a full year overview chart grid 1`] =
   <g>
     <rect
       class="day"
+      data-month="7"
       height="15"
       id="day_07-07-2018"
       rx="1.5"
@@ -91,6 +98,7 @@ exports[`ChartGrid - default should render a full year overview chart grid 1`] =
   <g>
     <rect
       class="day"
+      data-month="7"
       height="15"
       id="day_07-08-2018"
       rx="1.5"
@@ -103,6 +111,7 @@ exports[`ChartGrid - default should render a full year overview chart grid 1`] =
   <g>
     <rect
       class="day"
+      data-month="7"
       height="15"
       id="day_07-09-2018"
       rx="1.5"
@@ -115,6 +124,7 @@ exports[`ChartGrid - default should render a full year overview chart grid 1`] =
   <g>
     <rect
       class="day"
+      data-month="7"
       height="15"
       id="day_07-10-2018"
       rx="1.5"
@@ -127,6 +137,7 @@ exports[`ChartGrid - default should render a full year overview chart grid 1`] =
   <g>
     <rect
       class="day"
+      data-month="7"
       height="15"
       id="day_07-11-2018"
       rx="1.5"
@@ -139,6 +150,7 @@ exports[`ChartGrid - default should render a full year overview chart grid 1`] =
   <g>
     <rect
       class="day"
+      data-month="7"
       height="15"
       id="day_07-12-2018"
       rx="1.5"
@@ -151,6 +163,7 @@ exports[`ChartGrid - default should render a full year overview chart grid 1`] =
   <g>
     <rect
       class="day"
+      data-month="7"
       height="15"
       id="day_07-13-2018"
       rx="1.5"
@@ -163,6 +176,7 @@ exports[`ChartGrid - default should render a full year overview chart grid 1`] =
   <g>
     <rect
       class="day"
+      data-month="7"
       height="15"
       id="day_07-14-2018"
       rx="1.5"
@@ -175,6 +189,7 @@ exports[`ChartGrid - default should render a full year overview chart grid 1`] =
   <g>
     <rect
       class="day"
+      data-month="7"
       height="15"
       id="day_07-15-2018"
       rx="1.5"
@@ -187,6 +202,7 @@ exports[`ChartGrid - default should render a full year overview chart grid 1`] =
   <g>
     <rect
       class="day"
+      data-month="7"
       height="15"
       id="day_07-16-2018"
       rx="1.5"
@@ -199,6 +215,7 @@ exports[`ChartGrid - default should render a full year overview chart grid 1`] =
   <g>
     <rect
       class="day"
+      data-month="7"
       height="15"
       id="day_07-17-2018"
       rx="1.5"
@@ -211,6 +228,7 @@ exports[`ChartGrid - default should render a full year overview chart grid 1`] =
   <g>
     <rect
       class="day"
+      data-month="7"
       height="15"
       id="day_07-18-2018"
       rx="1.5"
@@ -223,6 +241,7 @@ exports[`ChartGrid - default should render a full year overview chart grid 1`] =
   <g>
     <rect
       class="day"
+      data-month="7"
       height="15"
       id="day_07-19-2018"
       rx="1.5"
@@ -235,6 +254,7 @@ exports[`ChartGrid - default should render a full year overview chart grid 1`] =
   <g>
     <rect
       class="day"
+      data-month="7"
       height="15"
       id="day_07-20-2018"
       rx="1.5"
@@ -247,6 +267,7 @@ exports[`ChartGrid - default should render a full year overview chart grid 1`] =
   <g>
     <rect
       class="day"
+      data-month="7"
       height="15"
       id="day_07-21-2018"
       rx="1.5"
@@ -259,6 +280,7 @@ exports[`ChartGrid - default should render a full year overview chart grid 1`] =
   <g>
     <rect
       class="day"
+      data-month="7"
       height="15"
       id="day_07-22-2018"
       rx="1.5"
@@ -271,6 +293,7 @@ exports[`ChartGrid - default should render a full year overview chart grid 1`] =
   <g>
     <rect
       class="day"
+      data-month="7"
       height="15"
       id="day_07-23-2018"
       rx="1.5"
@@ -283,6 +306,7 @@ exports[`ChartGrid - default should render a full year overview chart grid 1`] =
   <g>
     <rect
       class="day"
+      data-month="7"
       height="15"
       id="day_07-24-2018"
       rx="1.5"
@@ -295,6 +319,7 @@ exports[`ChartGrid - default should render a full year overview chart grid 1`] =
   <g>
     <rect
       class="day"
+      data-month="7"
       height="15"
       id="day_07-25-2018"
       rx="1.5"
@@ -307,6 +332,7 @@ exports[`ChartGrid - default should render a full year overview chart grid 1`] =
   <g>
     <rect
       class="day"
+      data-month="7"
       height="15"
       id="day_07-26-2018"
       rx="1.5"
@@ -319,6 +345,7 @@ exports[`ChartGrid - default should render a full year overview chart grid 1`] =
   <g>
     <rect
       class="day"
+      data-month="7"
       height="15"
       id="day_07-27-2018"
       rx="1.5"
@@ -331,6 +358,7 @@ exports[`ChartGrid - default should render a full year overview chart grid 1`] =
   <g>
     <rect
       class="day"
+      data-month="7"
       height="15"
       id="day_07-28-2018"
       rx="1.5"
@@ -343,6 +371,7 @@ exports[`ChartGrid - default should render a full year overview chart grid 1`] =
   <g>
     <rect
       class="day"
+      data-month="7"
       height="15"
       id="day_07-29-2018"
       rx="1.5"
@@ -355,6 +384,7 @@ exports[`ChartGrid - default should render a full year overview chart grid 1`] =
   <g>
     <rect
       class="day"
+      data-month="7"
       height="15"
       id="day_07-30-2018"
       rx="1.5"
@@ -367,6 +397,7 @@ exports[`ChartGrid - default should render a full year overview chart grid 1`] =
   <g>
     <rect
       class="day"
+      data-month="7"
       height="15"
       id="day_07-31-2018"
       rx="1.5"
