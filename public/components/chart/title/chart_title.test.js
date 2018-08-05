@@ -21,7 +21,7 @@ import React from 'react';
 import { findDOMNode } from 'react-dom';
 import { mount } from 'enzyme';
 import { ChartTitle } from './chart_title';
-import { CalendarVisConfig } from '../../../lib/calendar_vis_config';
+import { CalendarVisConfig, VIS_CHART_TYPE } from '../../../lib/calendar_vis_config';
 import { defaultParams } from '../../../default_settings';
 import aggResponse from '../../../__tests__/agg_response.json';
 
@@ -40,11 +40,30 @@ describe('ChartTitle - default', () => {
     visData = null;
   });
 
-  it('should render a full year overview chart grid', () => {
+  it('should render a full year overview chart title', () => {
+    const renderComplete = jest.fn();
     const titleWrapper = mount(
       <ChartTitle
         gridConfig={visConfig.get('grid')}
-        label={visData.label}
+        label={visData.yAxisLabel}
+        dateRef={visData.series[0].values[0].x}
+        chartType={VIS_CHART_TYPE.HEATMAP_YEAR}
+        renderComplete={renderComplete}
+      />
+    );
+    const title = titleWrapper.instance();
+    expect(findDOMNode(title)).toMatchSnapshot();
+  });
+
+  it('should render a full month overview chart title', () => {
+    const renderComplete = jest.fn();
+    const titleWrapper = mount(
+      <ChartTitle
+        gridConfig={visConfig.get('grid')}
+        label={visData.yAxisLabel}
+        dateRef={visData.series[0].values[0].x}
+        chartType={VIS_CHART_TYPE.HEATMAP_MONTH}
+        renderComplete={renderComplete}
       />
     );
     const title = titleWrapper.instance();

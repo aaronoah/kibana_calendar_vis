@@ -25,11 +25,17 @@ export class Dispatcher {
     this.src = null;
     this.dataTarget = null;
     this.config = null;
+    this.API = null;
   }
 
   newMapping() {
     this.src = null;
     this.dataTarget = null;
+    return this;
+  }
+
+  addAPI(API) {
+    this.API = API;
     return this;
   }
 
@@ -76,7 +82,14 @@ export class Dispatcher {
       }
 
       if (typeof callback === 'function') {
-        return element.on(event, callback.bind(this, self.config, self.container, self.dataTarget));
+        const options = {
+          API: self.API,
+          config: self.config,
+          container: self.container,
+          source: self.src,
+          dataTarget: self.dataTarget
+        };
+        return element.on(event, callback.bind(this, options));
       }
     });
 

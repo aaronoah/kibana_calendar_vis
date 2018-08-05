@@ -26,6 +26,8 @@ import { CalendarVisConfig } from '../../../lib/calendar_vis_config';
 import { AXIS_SCALE_TYPE } from './axis_scale';
 import aggResponse from '../../../__tests__/agg_response.json';
 import { defaultParams } from '../../../default_settings';
+import { Dispatcher } from '../../../lib';
+import { CalendarChart } from '../calendar_chart';
 
 sinon.spy(CalendarAxis.prototype, 'componentDidMount');
 
@@ -35,11 +37,13 @@ describe('CalendarAxis - default', () => {
   let visConfig;
   let axesConfig;
   let visData;
+  let dispatcher;
 
   beforeEach(() => {
     visConfig = new CalendarVisConfig(defaultParams);
     axesConfig = visConfig.get('categoryAxes');
     visData = aggResponse.rows[0];
+    dispatcher = new Dispatcher().addContainer(document.createElement('div'));
   });
 
   afterEach(() => {
@@ -50,21 +54,27 @@ describe('CalendarAxis - default', () => {
 
   it('should render a month axis', () => {
     const axisArgs = axesConfig.filter(axis => axis.scale.type === AXIS_SCALE_TYPE.MONTHS)[0];
+    const adjustSize = sinon.spy(CalendarChart.prototype.adjustSize);
+
     const axisWrapper = mount(<CalendarAxis
       key={key}
       type={visConfig.get('type')}
       gridConfig={visConfig.get('grid')}
       axisConfig={axisArgs}
       vislibData={visData}
+      dispatcher={dispatcher}
+      renderComplete={adjustSize}
     />);
 
     expect(CalendarAxis.prototype.componentDidMount.called).toEqual(true);
+    expect(adjustSize.calledOnce).toEqual(true);
     const axis = axisWrapper.instance();
     expect(findDOMNode(axis)).toMatchSnapshot();
   });
 
   it('should render a week axis', () => {
     const axisArgs = axesConfig.filter(axis => axis.scale.type === AXIS_SCALE_TYPE.WEEKS)[0];
+    const adjustSize = sinon.spy(CalendarChart.prototype.adjustSize);
 
     const axisWrapper = mount(
       <CalendarAxis
@@ -73,10 +83,13 @@ describe('CalendarAxis - default', () => {
         gridConfig={visConfig.get('grid')}
         axisConfig={axisArgs}
         vislibData={visData}
+        dispatcher={dispatcher}
+        renderComplete={adjustSize}
       />
     );
 
     expect(CalendarAxis.prototype.componentDidMount.called).toEqual(true);
+    expect(adjustSize.calledOnce).toEqual(true);
     const axis = axisWrapper.instance();
     expect(findDOMNode(axis)).toMatchSnapshot();
   });

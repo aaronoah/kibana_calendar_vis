@@ -19,6 +19,7 @@
 
 import { expect } from 'chai';
 import ngMock from 'ng_mock';
+import moment from 'moment';
 import $ from 'jquery';
 import sinon from 'sinon';
 import Enzyme, { shallow } from 'enzyme';
@@ -41,6 +42,7 @@ import {
 } from '../default_settings';
 import aggResponse from './agg_response.json';
 import './hack';
+import { truncateUnusable, replicateDate } from '../../test/jest/utils';
 
 describe('CalendarVisualizations', () => {
 
@@ -52,7 +54,9 @@ describe('CalendarVisualizations', () => {
   let Vis;
   let vis;
   let indexPattern;
-  let visData;
+  const visData = {};
+  visData.rows = [truncateUnusable(aggResponse.rows[0])];
+  visData.rows = [replicateDate(visData.rows[0])];
   let updateStatus;
   const defaultVisState = {
     type: 'calendar',
@@ -102,7 +106,6 @@ describe('CalendarVisualizations', () => {
 
     beforeEach(() => {
       setupDOM('512px', '512px');
-      visData = aggResponse;
       renderDOM = CalendarVisualization.prototype.renderDOM;
       unmountDOM = CalendarVisualization.prototype.unmountDOM;
       CalendarVisualization.prototype.renderDOM = function (component, node) {
@@ -115,7 +118,6 @@ describe('CalendarVisualizations', () => {
     });
 
     afterEach(() => {
-      visData = null;
       CalendarVisualization.prototype.renderDOM = renderDOM;
       CalendarVisualization.prototype.unmountDOM = unmountDOM;
       calendarVis.destroy();
@@ -162,27 +164,12 @@ describe('CalendarVisualizations', () => {
       });
     });
 
-    it('should render only charts', async () => {
-
-      vis.params.addLegend = false;
-      vis.params.addTooltip = false;
-      calendarVis = new CalendarVisualization(domNode, vis);
-      await calendarVis.render(visData, updateStatus);
-
-      shouldRenderWith({
-        charts: true,
-        tooltip: false,
-        legend: false
-      });
-    });
-
   });
 
   describe('CalendarVisualizations - fully rendered with charts, tooltip and legend', () => {
 
     beforeEach(() => {
       setupDOM('512px', '512px');
-      visData = aggResponse;
       visData.rows.forEach(r => {
         r.tooltipFormatter = function () {}; //enforce a fake function to pass sinon compliation
         sinon.stub(r, 'tooltipFormatter').callsFake(function () {
@@ -192,7 +179,6 @@ describe('CalendarVisualizations', () => {
     });
 
     afterEach(() => {
-      visData = null;
       calendarVis.destroy();
       calendarVis = null;
       updateStatus = null;
@@ -203,7 +189,6 @@ describe('CalendarVisualizations', () => {
 
       calendarVis = new CalendarVisualization(domNode, vis);
       await calendarVis.render(visData, updateStatus);
-
       const canvas = domNode.querySelector(`.${chartCanvas.split(' ')[1]}`);
       const dataCell = canvas.querySelector('.data-day');
 

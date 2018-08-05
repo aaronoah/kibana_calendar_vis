@@ -42,7 +42,7 @@ export function calendarDataObjectProvider(config) {
     }
 
     getData() {
-      const source = (this.data.rows || this.data.columns);
+      const source = (this.data.rows || this.data.columns || [this.data]);
       return source;
     }
 

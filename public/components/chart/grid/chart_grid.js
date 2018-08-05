@@ -57,8 +57,13 @@ export class ChartGrid extends React.Component {
       yOffset: yOffset
     };
 
-    const renderGrid = this._drawGrid(this.chartGrid.current, wrapper);
-    await renderGrid;
+    this._drawGrid(this.chartGrid.current, wrapper);
+    this.props.renderComplete();
+  }
+
+  componentWillUnmount() {
+    d3.select(this.chartGrid.current).remove();
+    this.chartGrid = null;
   }
 
   _getMonthInterval(values) {
@@ -67,8 +72,12 @@ export class ChartGrid extends React.Component {
     return getMonthInterval(startDate, endDate);
   }
 
-  async _drawGrid(svg, { year, aggs, cellSize, xOffset, yOffset }) {
-    const type = this.props.type;
+  _getMonth(values) {
+    return new Date(_.head(values).x).getMonth();
+  }
+
+  _drawGrid(svg, { year, aggs, cellSize, xOffset, yOffset }) {
+    const { type } = this.props;
 
     if(type === VIS_CHART_TYPE.HEATMAP_YEAR) {
       const [startMonth, endMonth] = this._getMonthInterval(aggs);
@@ -77,9 +86,7 @@ export class ChartGrid extends React.Component {
 
       d3.select(svg)
         .selectAll('.day')
-        .data(() => (
-          d3.time.days(startFullDate, endFullDate)
-        ))
+        .data(d3.time.days(startFullDate, endFullDate))
         .enter().append('g').append('rect')
         .attr('id', (d) => {
           return 'day_' + moment(d).format(getTimeFormat());
@@ -94,6 +101,29 @@ export class ChartGrid extends React.Component {
         })
         .attr('y', (d) => {
           return yOffset * 3 + (moment(d).weekday() * cellSize);
+        })
+        .attr('rx', cellSize * 1 / 10)
+        .attr('ry', cellSize * 1 / 10);
+    } else if (type === VIS_CHART_TYPE.HEATMAP_MONTH) {
+      const month = this._getMonth(aggs);
+      const startDate = new Date(parseInt(year), month, 1);
+      const endDate = new Date(parseInt(year), month + 1, 1);
+
+      d3.select(svg)
+        .selectAll('.day')
+        .data(d3.time.days(startDate, endDate))
+        .enter().append('g').append('rect')
+        .attr('id', (d) => {
+          return 'day_' + moment(d).format(getTimeFormat());
+        })
+        .classed('day', true)
+        .attr('width', cellSize)
+        .attr('height', cellSize)
+        .attr('x', (d) => {
+          return xOffset * 2 + (moment(d).weekday() * cellSize);
+        })
+        .attr('y', (d) => {
+          return yOffset * 3 + ((moment(d).week() - moment(startDate).week()) * cellSize);
         })
         .attr('rx', cellSize * 1 / 10)
         .attr('ry', cellSize * 1 / 10);

@@ -38,12 +38,14 @@ export class AxisConfig extends BaseConfig {
       this._values[arg] = gridConfigArgs[arg];
     });
 
-    if(this._values.type === 'category') {
-      if(this._values.scale.type === AXIS_SCALE_TYPE.MONTHS) {
+    if (this._values.position === 'top') {
+      if (this._values.scale.type === AXIS_SCALE_TYPE.MONTHS) {
         this._values.padding = this._values.cellSize * 3;
-      }else if(this._values.scale.type === AXIS_SCALE_TYPE.WEEKS) {
-        this._values.padding = this._values.cellSize * 1.05;
+      } else if (this._values.scale.type === AXIS_SCALE_TYPE.WEEKS) {
+        this._values.padding = this._values.cellSize;
       }
+    } else if (this._values.position === 'left') {
+      this._values.padding = this._values.cellSize * 1.05;
     }
   }
 
@@ -77,7 +79,10 @@ export class AxisConfig extends BaseConfig {
           }
         }
         break;
-      default:
+      case VIS_CHART_TYPE.HEATMAP_MONTH:
+        if (position === 'top' && type !== AXIS_SCALE_TYPE.WEEKS) {
+          throw new TypeError(`axis of id: ${this._values.id} has invalid scale: ${type}`);
+        }
         break;
     }
 

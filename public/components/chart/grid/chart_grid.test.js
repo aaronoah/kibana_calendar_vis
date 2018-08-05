@@ -23,8 +23,10 @@ import { mount } from 'enzyme';
 import sinon from 'sinon';
 import { ChartGrid } from './chart_grid';
 import { CalendarVisConfig } from '../../../lib/calendar_vis_config';
-import { defaultParams } from '../../../default_settings';
+import { defaultParams, monthViewParams } from '../../../default_settings';
 import aggResponse from '../../../__tests__/agg_response.json';
+import { CalendarChart } from '../calendar_chart';
+import { truncateUnusable, replicateDate } from '../../../../test/jest/utils';
 
 sinon.spy(ChartGrid.prototype, 'componentDidMount');
 
@@ -34,8 +36,7 @@ describe('ChartGrid - default', () => {
   let visData;
 
   beforeEach(() => {
-    visConfig = new CalendarVisConfig(defaultParams);
-    visData = aggResponse.rows[0];
+    visData = truncateUnusable(aggResponse.rows[0]);
   });
 
   afterEach(() => {
@@ -44,14 +45,41 @@ describe('ChartGrid - default', () => {
   });
 
   it('should render a full year overview chart grid', () => {
+    visConfig = new CalendarVisConfig(defaultParams);
+    // replicate data
+    visData = replicateDate(visData);
+    const adjustSize = sinon.spy(CalendarChart.prototype.adjustSize);
     const gridWrapper = mount(
       <ChartGrid
         type={visConfig.get('type')}
         gridConfig={visConfig.get('grid')}
         vislibData={visData}
+        axes={visConfig.get('categoryAxes')}
+        renderComplete={adjustSize}
       />
     );
     expect(ChartGrid.prototype.componentDidMount.called).toEqual(true);
+    expect(adjustSize.calledOnce).toEqual(true);
+    const grid = gridWrapper.instance();
+    expect(findDOMNode(grid)).toMatchSnapshot();
+  });
+
+  it('should render a full month overview chart grid', () => {
+    visConfig = new CalendarVisConfig(monthViewParams);
+    // replicate data
+    visData = replicateDate(visData, 3);
+    const adjustSize = sinon.spy(CalendarChart.prototype.adjustSize);
+    const gridWrapper = mount(
+      <ChartGrid
+        type={visConfig.get('type')}
+        gridConfig={visConfig.get('grid')}
+        vislibData={visData}
+        axes={visConfig.get('categoryAxes')}
+        renderComplete={adjustSize}
+      />
+    );
+    expect(ChartGrid.prototype.componentDidMount.called).toEqual(true);
+    expect(adjustSize.calledOnce).toEqual(true);
     const grid = gridWrapper.instance();
     expect(findDOMNode(grid)).toMatchSnapshot();
   });

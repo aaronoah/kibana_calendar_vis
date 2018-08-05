@@ -10,18 +10,13 @@ exports[`LegendBar should collapse and expand when click the arrow 1`] = `
     <LegendBar
       colorFunc={[Function]}
       dispatcher={
-        Object {
+        Dispatcher {
+          "API": null,
           "config": Object {
             "get": [Function],
           },
           "container": null,
           "dataTarget": "[data-label]",
-          "handler": Object {
-            "bindEl": [Function],
-            "el": <div />,
-            "error": [Function],
-            "removeError": [Function],
-          },
           "src": null,
         }
       }
@@ -142,18 +137,13 @@ exports[`LegendBar should render a full LegendBar component, default position to
     <LegendBar
       colorFunc={[Function]}
       dispatcher={
-        Object {
+        Dispatcher {
+          "API": null,
           "config": Object {
             "get": [Function],
           },
           "container": null,
           "dataTarget": "[data-label]",
-          "handler": Object {
-            "bindEl": [Function],
-            "el": <div />,
-            "error": [Function],
-            "removeError": [Function],
-          },
           "src": null,
         }
       }

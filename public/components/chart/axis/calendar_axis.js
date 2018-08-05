@@ -23,6 +23,7 @@ import moment from 'moment';
 import { AxisConfig } from './axis_config';
 import { AXIS_SCALE_TYPE, CalendarAxisScale } from './axis_scale';
 import './calendar_axis.less';
+import { expandView } from '../../../lib/events';
 
 export class CalendarAxis extends React.Component {
   constructor(props) {
@@ -36,12 +37,13 @@ export class CalendarAxis extends React.Component {
 
   componentDidMount() {
     const pos = this.axisConfig.get('position');
-    const { vislibData } = this.props;
+    const { vislibData, renderComplete } = this.props;
     if (pos === 'top') {
       this._drawTop(vislibData);
     } else if (pos === 'left') {
       this._drawLeft(vislibData);
     }
+    renderComplete();
   }
 
   render() {
@@ -58,6 +60,7 @@ export class CalendarAxis extends React.Component {
   }
 
   componentWillUnmount() {
+    d3.select(this.axis.current).remove();
     this.axisConfig = null;
     this.axisScale = null;
     this.axis = null;
@@ -72,15 +75,14 @@ export class CalendarAxis extends React.Component {
       padding
     ] = this.axisConfig.get(['scale.type', 'cellSize', 'xOffset', 'yOffset', 'padding']);
 
+    const axis = d3.select(this.axis.current);
+
     if (type === AXIS_SCALE_TYPE.MONTHS) {
       const label = vislibData.label;
       const year = label.slice(0, 4);
-      const monthLabels = d3.select(this.axis.current);
 
       const monthLeftPad = [];
       const [startMonth, endMonth] = this.axisScale.getExtents(vislibData);
-      // console.log(startMonth + '\n');
-      // console.log(endMonth + '\n');
       const sMonth = this.axisScale.getNumericScale(startMonth);
       const eMonth = this.axisScale.getNumericScale(endMonth);
       this.axisScale.setExtents({ scaleMin: startMonth, scaleMax: endMonth });
@@ -93,16 +95,26 @@ export class CalendarAxis extends React.Component {
         monthLeftPad.push(pad);
       }
 
-      // console.log(monthLeftPad.length + '\n');
-      // console.log(this.axisScale.extents.length);
-
       this.axisScale.extents.forEach((d, i) => {
-        monthLabels.append('text')
+        axis.append('text')
           .attr('class', 'month-label')
           .attr('data-month', `${sMonth + i}`)
+          .attr('data-year', year)
           .attr('x', monthLeftPad[i] + padding + xOffset * 2)
           .attr('y', yOffset * 2.5)
-          .style('font-size', cellSize * 4 / 5)
+          .style('font-size', 12)
+          .text(d);
+      });
+
+      this.props.dispatcher.newMapping().addSource('.month-label').addDataTarget('[data-month]')
+        .addEvent('click', expandView);
+    } else if (type === AXIS_SCALE_TYPE.WEEKS) {
+      this.axisScale.extents.forEach(function (d, i) {
+        axis.append('text')
+          .attr('class', 'day-label')
+          .attr('x', ((i + 0.15) * padding) + xOffset * 2)
+          .attr('y', yOffset * 2.5)
+          .style('font-size', 15)
           .text(d);
       });
     }

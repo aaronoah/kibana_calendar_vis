@@ -19,38 +19,57 @@
 
 import React from 'react';
 import { shallow } from 'enzyme';
-import sinon from 'sinon';
 import { CalendarChart } from './calendar_chart';
-import { CalendarVisConfig } from '../../lib';
-import { defaultParams } from '../../default_settings';
+import { CalendarVisConfig, Dispatcher } from '../../lib';
+import { defaultParams, monthViewParams } from '../../default_settings';
 import aggResponse from '../../__tests__/agg_response.json';
+import { truncateUnusable, replicateDate } from '../../../test/jest/utils';
 
 describe('CalendarChart', () => {
 
   let visConfig;
   let visData;
+  let dispatcher;
 
-  beforeAll(() => {
-    visConfig = new CalendarVisConfig(defaultParams);
-    visData = aggResponse.rows[0];
+  beforeEach(() => {
+    dispatcher = new Dispatcher().addContainer(document.createElement('div'));
+    visData = truncateUnusable(aggResponse.rows[0]);
   });
 
-  afterAll(() => {
+  afterEach(() => {
     visConfig = null;
     visData = null;
   });
 
-  it('should render a chart with two category axes, one grid and a title', () => {
+  it('should render a year view chart with two category axes, one grid and a title', () => {
+    visConfig = new CalendarVisConfig(defaultParams);
+    // replicate data
+    visData = replicateDate(visData);
+
     const renderComplete = jest.fn();
-    sinon.spy(CalendarChart.prototype, 'componentDidMount');
     const chartWrapper = shallow(<CalendarChart
       id={`chart_${visData.label.slice(0, 4)}`}
       visConfig={visConfig}
       vislibData={visData}
+      dispatcher={dispatcher}
       renderComplete={renderComplete}
     />);
-    expect(renderComplete.mock.calls.length).toBe(1);
-    expect(CalendarChart.prototype.componentDidMount.calledOnce).toEqual(true);
+    expect(chartWrapper).toMatchSnapshot();
+  });
+
+  it('should render a month view chart with one category axis, one grid and a title', () => {
+    visConfig = new CalendarVisConfig(monthViewParams);
+    // replicate data
+    visData = replicateDate(visData, 3);
+
+    const renderComplete = jest.fn();
+    const chartWrapper = shallow(<CalendarChart
+      id={`chart_${visData.label.slice(0, 4)}`}
+      visConfig={visConfig}
+      vislibData={visData}
+      dispatcher={dispatcher}
+      renderComplete={renderComplete}
+    />);
     expect(chartWrapper).toMatchSnapshot();
   });
 });

@@ -18,17 +18,31 @@
  */
 
 import React from 'react';
+import moment from 'moment';
 import { GridConfig } from '../grid/grid_config';
 import './chart_title.less';
+import { VIS_CHART_TYPE } from '../../../lib';
 
 export class ChartTitle extends React.Component {
   constructor(props) {
     super(props);
-    const { gridConfig } = this.props;
+    const { gridConfig, chartType, dateRef, label } = this.props;
     this.gridConfig = new GridConfig(gridConfig);
+    let labelToShow = label;
+
+    if (chartType === VIS_CHART_TYPE.HEATMAP_MONTH) {
+      labelToShow = moment(dateRef).format('MMM YYYY') + ': ' + labelToShow + ' per month';
+    } else if (chartType === VIS_CHART_TYPE.HEATMAP_YEAR) {
+      labelToShow = moment(dateRef).format('YYYY') + ': ' + labelToShow + ' per year';
+    }
+
     this.state = {
-      label: props.label
+      label: labelToShow
     };
+  }
+
+  componentDidMount() {
+    this.props.renderComplete();
   }
 
   render() {

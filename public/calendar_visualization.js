@@ -100,6 +100,7 @@ export function calendarVisualizationProvider(config) {
             id={`chart_${vislibData.dataAt(i).label.slice(0, 4)}`}
             visConfig={self.visConfig}
             vislibData={vislibData.dataAt(i)}
+            dispatcher={self.dispatcher.addAPI(self.vis.API)}
             renderComplete={resolve}
           />, cEl);
         });
@@ -205,13 +206,21 @@ export function calendarVisualizationProvider(config) {
     }
 
     async _render(vislibData, updateStatus) {
-      const { aggs, data, params, time, resize } = updateStatus;
+      const { aggs, data, params, time, resize, uiState } = updateStatus;
+      if ((!aggs && !data && !params && !uiState)) {
+        if (resize && time) {
+          return;
+        } else if (resize && !time) {
+          return;
+        }
+      }
+
       const localeProvider = momentLocales[this.visConfig.get('locale')];
       localeProvider({
         enable: true
       });
 
-      if((params && resize) || (data && time) || (data && params) || (data && !aggs && !params && !time && !resize)) {
+      if(time || (params && resize) || (data && params) || (data && !aggs && !params && !time && !resize)) {
         if(this.container.contains(this.calendarVis)) {
           await this._unmountChart();
         }
@@ -269,6 +278,7 @@ export function calendarVisualizationProvider(config) {
           const vals = r.series[0].values;
           vals.forEach(v => {
             const dayId = 'day_' + moment(v.x).format(getTimeFormat());
+            // console.log(dayId);
             this.hashTable.put(dayId, v);
           });
         });
@@ -291,7 +301,7 @@ export function calendarVisualizationProvider(config) {
         this._putAll(visData);
         CalendarErrorHandler.removeError();
         const vislibData = new Data(visData, this.vis.getUiState());
-        this.visConfig.update(this.vis.params);
+        this.visConfig.update(this.vis);
         return this._render(vislibData, updateStatus);
       } catch (error) {
         if (error instanceof KbnError) {

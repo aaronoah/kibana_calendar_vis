@@ -18,8 +18,9 @@
  */
 
 import $ from 'jquery';
+import moment from 'moment';
 
-export function highlight(config, container, dataTarget) {
+export function highlight({ config, container, dataTarget }) {
   const label = this.getAttribute(dataTarget.replace(/\=".*"/, '').slice(1, -1));
 
   function justifyOpacity(opacity) {
@@ -35,7 +36,24 @@ export function highlight(config, container, dataTarget) {
     .css('opacity', justifyOpacity(dimming));
 }
 
-export function unHighlight(config, container, dataTarget) {
+export function unHighlight({ container, dataTarget }) {
   const div = $(container);
   $(dataTarget, div).css('opacity', '');
+}
+
+export function expandView({ API }) {
+  const { timeFilter } = API;
+  const { year, month, day } = this.dataset;
+  let start;
+  let end;
+  if (day === undefined) {
+    start = moment(new Date(year, month - 1, 1));
+    end = moment(new Date(year, month, 0));
+  }
+  const time = {
+    from: start,
+    to: end,
+    mode: 'absolute'
+  };
+  timeFilter.setTime(time);
 }
