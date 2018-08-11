@@ -18,18 +18,33 @@
  */
 
 import React from 'react';
+import moment from 'moment';
 import { shallow } from 'enzyme';
 import { CalendarChart } from './calendar_chart';
 import { CalendarVisConfig, Dispatcher } from '../../lib';
 import { defaultParams, monthViewParams } from '../../default_settings';
 import aggResponse from '../../__tests__/agg_response.json';
 import { truncateUnusable, replicateDate } from '../../../test/jest/utils';
+import { calculateBounds } from 'ui/timefilter/get_time';
 
 describe('CalendarChart', () => {
 
   let visConfig;
   let visData;
   let dispatcher;
+  const fakeVis = {
+    params: defaultParams,
+    API: {
+      timeFilter: {
+        getBounds: function () {
+          return calculateBounds({
+            from: moment(1531026000000),
+            to: moment(1531026000000 + 35 * 86400000)
+          });
+        }
+      }
+    }
+  };
 
   beforeEach(() => {
     dispatcher = new Dispatcher().addContainer(document.createElement('div'));
@@ -42,7 +57,7 @@ describe('CalendarChart', () => {
   });
 
   it('should render a year view chart with two category axes, one grid and a title', () => {
-    visConfig = new CalendarVisConfig(defaultParams);
+    visConfig = new CalendarVisConfig(fakeVis, defaultParams);
     // replicate data
     visData = replicateDate(visData);
 
@@ -58,7 +73,7 @@ describe('CalendarChart', () => {
   });
 
   it('should render a month view chart with one category axis, one grid and a title', () => {
-    visConfig = new CalendarVisConfig(monthViewParams);
+    visConfig = new CalendarVisConfig(fakeVis, monthViewParams);
     // replicate data
     visData = replicateDate(visData, 3);
 

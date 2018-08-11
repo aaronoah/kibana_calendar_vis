@@ -18,6 +18,7 @@
  */
 
 import React from 'react';
+import moment from 'moment';
 import { mount } from 'enzyme';
 import sinon from 'sinon';
 import { LegendBar } from './legend_bar';
@@ -28,6 +29,7 @@ import { Dispatcher } from '../../lib/dispatcher';
 import aggResponse from '../../__tests__/agg_response.json';
 import colorMap from '../../__tests__/colormap.json';
 import { containerName, legendName, defaultParams } from '../../default_settings';
+import { calculateBounds } from 'ui/timefilter/get_time';
 
 describe('LegendBar', () => {
 
@@ -47,13 +49,26 @@ describe('LegendBar', () => {
       }
     }
   };
+  const fakeVis = {
+    params: defaultParams,
+    API: {
+      timeFilter: {
+        getBounds: function () {
+          return calculateBounds({
+            from: moment(1531026000000),
+            to: moment(1531026000000 + 35 * 86400000)
+          });
+        }
+      }
+    }
+  };
   let fakeUiState;
   let setUiState;
   let getUiState;
 
   beforeEach(() => {
     visData = aggResponse;
-    visConfig = new CalendarVisConfig(defaultParams);
+    visConfig = new CalendarVisConfig(fakeVis, defaultParams);
 
     visConfig.set('legend', {
       labels: Object.keys(colorMap)

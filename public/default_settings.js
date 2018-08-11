@@ -60,7 +60,6 @@ export const defaultParams = {
     },
   }],
   valueAxes: [{
-    show: false,
     id: 'ValueAxis-1',
     type: 'value',
     scale: {

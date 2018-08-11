@@ -18,20 +18,35 @@
  */
 
 import React from 'react';
+import moment from 'moment';
 import { findDOMNode } from 'react-dom';
 import { mount } from 'enzyme';
 import { ChartTitle } from './chart_title';
 import { CalendarVisConfig, VIS_CHART_TYPE } from '../../../lib/calendar_vis_config';
 import { defaultParams } from '../../../default_settings';
 import aggResponse from '../../../__tests__/agg_response.json';
+import { calculateBounds } from 'ui/timefilter/get_time';
 
 describe('ChartTitle - default', () => {
 
   let visConfig;
   let visData;
+  const fakeVis = {
+    params: defaultParams,
+    API: {
+      timeFilter: {
+        getBounds: function () {
+          return calculateBounds({
+            from: moment(1531026000000),
+            to: moment(1531026000000 + 35 * 86400000)
+          });
+        }
+      }
+    }
+  };
 
   beforeEach(() => {
-    visConfig = new CalendarVisConfig(defaultParams);
+    visConfig = new CalendarVisConfig(fakeVis, defaultParams);
     visData = aggResponse.rows[0];
   });
 

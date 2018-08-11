@@ -102,7 +102,7 @@ export class CalendarAxis extends React.Component {
           .attr('data-year', year)
           .attr('x', monthLeftPad[i] + padding + xOffset * 2)
           .attr('y', yOffset * 2.5)
-          .style('font-size', 12)
+          .style('font-size', cellSize * 7 / 10)
           .text(d);
       });
 
@@ -114,7 +114,7 @@ export class CalendarAxis extends React.Component {
           .attr('class', 'day-label')
           .attr('x', ((i + 0.15) * padding) + xOffset * 2)
           .attr('y', yOffset * 2.5)
-          .style('font-size', 15)
+          .style('font-size', cellSize * 4 / 10)
           .text(d);
       });
     }
@@ -131,7 +131,7 @@ export class CalendarAxis extends React.Component {
           .attr('class', 'day-label')
           .attr('y', () => (yOffset * 3.1) + ((i + 0.4) * padding))
           .attr('x', 5)
-          .style('font-size', cellSize * 4 / 5)
+          .style('font-size', cellSize * 7 / 10)
           .text(d);
       });
     }

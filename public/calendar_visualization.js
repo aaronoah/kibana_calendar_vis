@@ -53,7 +53,7 @@ export function calendarVisualizationProvider(config) {
       this.calendarVis = document.createElement('div');
       this.calendarVis.className = chartCanvas;
       this.charts = [];
-      this.visConfig = new VisConfig(vis.params);
+      this.visConfig = new VisConfig(vis, vis.params);
       this.valueAxes = this.visConfig.get('valueAxes').map(axisConfig => new ValueAxis(this.visConfig, axisConfig, this.vis));
       this.tooltipContainer = null;
       this.legendNode = null;
@@ -206,28 +206,21 @@ export function calendarVisualizationProvider(config) {
     }
 
     async _render(vislibData, updateStatus) {
-      const { aggs, data, params, time, resize, uiState } = updateStatus;
-      if ((!aggs && !data && !params && !uiState)) {
-        if (resize && time) {
-          return;
-        } else if (resize && !time) {
-          return;
-        }
-      }
+      const { aggs, data, params, time, resize } = updateStatus;
 
       const localeProvider = momentLocales[this.visConfig.get('locale')];
       localeProvider({
         enable: true
       });
 
-      if(time || (params && resize) || (data && params) || (data && !aggs && !params && !time && !resize)) {
+      if(aggs || time || resize || (params && resize) || (data && params) || (data && !aggs && !params && !time && !resize)) {
         if(this.container.contains(this.calendarVis)) {
           await this._unmountChart();
         }
         await this._mountChart(vislibData);
       }
 
-      if(aggs || data || params || time) {
+      if(aggs || data || params || time || resize) {
         const renderValues = this.valueAxes.map(async (axis) => {
           await axis.drawValues(vislibData);
         });
@@ -278,7 +271,6 @@ export function calendarVisualizationProvider(config) {
           const vals = r.series[0].values;
           vals.forEach(v => {
             const dayId = 'day_' + moment(v.x).format(getTimeFormat());
-            // console.log(dayId);
             this.hashTable.put(dayId, v);
           });
         });
@@ -301,7 +293,9 @@ export function calendarVisualizationProvider(config) {
         this._putAll(visData);
         CalendarErrorHandler.removeError();
         const vislibData = new Data(visData, this.vis.getUiState());
-        this.visConfig.update(this.vis);
+        this.visConfig.update(updateStatus, {
+          containerWidth: this.container.getBoundingClientRect().width
+        });
         return this._render(vislibData, updateStatus);
       } catch (error) {
         if (error instanceof KbnError) {

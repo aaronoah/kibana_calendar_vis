@@ -18,6 +18,7 @@
  */
 
 import React from 'react';
+import moment from 'moment';
 import { findDOMNode } from 'react-dom';
 import { mount } from 'enzyme';
 import sinon from 'sinon';
@@ -28,6 +29,7 @@ import aggResponse from '../../../__tests__/agg_response.json';
 import { defaultParams } from '../../../default_settings';
 import { Dispatcher } from '../../../lib';
 import { CalendarChart } from '../calendar_chart';
+import { calculateBounds } from 'ui/timefilter/get_time';
 
 sinon.spy(CalendarAxis.prototype, 'componentDidMount');
 
@@ -38,9 +40,22 @@ describe('CalendarAxis - default', () => {
   let axesConfig;
   let visData;
   let dispatcher;
+  const fakeVis = {
+    params: defaultParams,
+    API: {
+      timeFilter: {
+        getBounds: function () {
+          return calculateBounds({
+            from: moment(1531026000000),
+            to: moment(1531026000000 + 35 * 86400000)
+          });
+        }
+      }
+    }
+  };
 
   beforeEach(() => {
-    visConfig = new CalendarVisConfig(defaultParams);
+    visConfig = new CalendarVisConfig(fakeVis, defaultParams);
     axesConfig = visConfig.get('categoryAxes');
     visData = aggResponse.rows[0];
     dispatcher = new Dispatcher().addContainer(document.createElement('div'));

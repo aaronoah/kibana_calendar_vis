@@ -8,7 +8,7 @@ exports[`CalendarAxis - default should render a month axis 1`] = `
     class="month-label"
     data-month="7"
     data-year="2018"
-    style="font-size: 12;"
+    style="font-size: 10.5;"
     x="85"
     y="50"
   >
@@ -23,7 +23,7 @@ exports[`CalendarAxis - default should render a week axis 1`] = `
 >
   <text
     class="day-label"
-    style="font-size: 12;"
+    style="font-size: 10.5;"
     x="5"
     y="68.3"
   >
@@ -31,7 +31,7 @@ exports[`CalendarAxis - default should render a week axis 1`] = `
   </text>
   <text
     class="day-label"
-    style="font-size: 12;"
+    style="font-size: 10.5;"
     x="5"
     y="84.05"
   >
@@ -39,7 +39,7 @@ exports[`CalendarAxis - default should render a week axis 1`] = `
   </text>
   <text
     class="day-label"
-    style="font-size: 12;"
+    style="font-size: 10.5;"
     x="5"
     y="99.8"
   >
@@ -47,7 +47,7 @@ exports[`CalendarAxis - default should render a week axis 1`] = `
   </text>
   <text
     class="day-label"
-    style="font-size: 12;"
+    style="font-size: 10.5;"
     x="5"
     y="115.55"
   >
@@ -55,7 +55,7 @@ exports[`CalendarAxis - default should render a week axis 1`] = `
   </text>
   <text
     class="day-label"
-    style="font-size: 12;"
+    style="font-size: 10.5;"
     x="5"
     y="131.3"
   >
@@ -63,7 +63,7 @@ exports[`CalendarAxis - default should render a week axis 1`] = `
   </text>
   <text
     class="day-label"
-    style="font-size: 12;"
+    style="font-size: 10.5;"
     x="5"
     y="147.05"
   >
@@ -71,7 +71,7 @@ exports[`CalendarAxis - default should render a week axis 1`] = `
   </text>
   <text
     class="day-label"
-    style="font-size: 12;"
+    style="font-size: 10.5;"
     x="5"
     y="162.8"
   >

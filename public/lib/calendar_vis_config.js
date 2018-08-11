@@ -38,18 +38,19 @@ const DEFAULT_VIS_CONFIG = {
 };
 
 export class CalendarVisConfig extends BaseConfig {
-  constructor(visConfigArgs) {
+  constructor(vis, visConfigArgs) {
     super(visConfigArgs);
+    this.vis = vis;
+    this.chartType = null;
     this._values = _.defaultsDeep({}, this._values, DEFAULT_VIS_CONFIG);
   }
 
-  update(vis) {
-    const { params } = vis;
+  _updateTime() {
     /*
       * Justification for setting params changes:
       * they should be managed outside of visualization and visualization should only handle rendering
       */
-    const { timeFilter } = vis.API;
+    const { timeFilter } = this.vis.API;
     const {
       min: from,
       max: to
@@ -59,24 +60,21 @@ export class CalendarVisConfig extends BaseConfig {
       // render a day view
     } else if (diff > 1 && diff < 32 && new Date(from).getMonth() === new Date(to).getMonth()) {
       // render a month view
-      params.type = VIS_CHART_TYPE.HEATMAP_MONTH;
-      params.categoryAxes = [{
+      this.chartType = VIS_CHART_TYPE.HEATMAP_MONTH;
+      this.set('type', this.chartType);
+      this.set('categoryAxes', [{
         id: 'CategoryAxis-1',
         type: 'category',
         position: 'top',
         scale: {
           type: AXIS_SCALE_TYPE.WEEKS
         },
-      }];
-      params.grid = Object.assign(params.grid, {
-        cellSize: 40,
-        xOffset: 20,
-        yOffset: 20
-      });
+      }]);
     } else if (diff > 31) {
       // render a year view
-      params.type = VIS_CHART_TYPE.HEATMAP_YEAR;
-      params.categoryAxes = [{
+      this.chartType = VIS_CHART_TYPE.HEATMAP_YEAR;
+      this.set('type', this.chartType);
+      this.set('categoryAxes', [{
         id: 'CategoryAxis-1',
         type: 'category',
         position: 'top',
@@ -90,13 +88,55 @@ export class CalendarVisConfig extends BaseConfig {
         scale: {
           type: AXIS_SCALE_TYPE.WEEKS
         },
-      }];
-      params.grid = Object.assign(params.grid, {
-        cellSize: 15,
-        xOffset: 20,
-        yOffset: 20
-      });
+      }]);
     }
-    this._values = _.cloneDeep(params);
+  }
+
+  _updateGrid(extraOpts) {
+    const { containerWidth } = extraOpts;
+    let cellSize;
+    switch (this.chartType) {
+      case VIS_CHART_TYPE.HEATMAP_YEAR:
+        cellSize = containerWidth * 1.5 / 100;
+        if (cellSize < 15) {
+          this.set('grid.cellSize', 15);
+        } else if (cellSize > 20) {
+          this.set('grid.cellSize', 20);
+        } else {
+          this.set('grid.cellSize', cellSize);
+        }
+        break;
+      case VIS_CHART_TYPE.HEATMAP_MONTH:
+        cellSize = containerWidth * 4 / 100;
+        if (cellSize < 35) {
+          this.set('grid.cellSize', 35);
+        } else if (cellSize > 50) {
+          this.set('grid.cellSize', 50);
+        } else {
+          this.set('grid.cellSize', cellSize);
+        }
+        break;
+    }
+  }
+
+  update(updateStatus, extraOpts) {
+    const { data, resize, time, params } = updateStatus;
+
+    if (params) { //params updates are always executed first
+      this._values = _.cloneDeep(this.vis.params);
+    }
+
+    if (data) {
+      this._updateTime();
+      this._updateGrid(extraOpts);
+    }
+
+    if (time) {
+      this._updateTime();
+    }
+
+    if (resize) {
+      this._updateGrid(extraOpts);
+    }
   }
 }

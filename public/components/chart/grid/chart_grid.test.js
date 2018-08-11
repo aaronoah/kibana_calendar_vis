@@ -18,6 +18,7 @@
  */
 
 import React from 'react';
+import moment from 'moment';
 import { findDOMNode } from 'react-dom';
 import { mount } from 'enzyme';
 import sinon from 'sinon';
@@ -27,6 +28,7 @@ import { defaultParams, monthViewParams } from '../../../default_settings';
 import aggResponse from '../../../__tests__/agg_response.json';
 import { CalendarChart } from '../calendar_chart';
 import { truncateUnusable, replicateDate } from '../../../../test/jest/utils';
+import { calculateBounds } from 'ui/timefilter/get_time';
 
 sinon.spy(ChartGrid.prototype, 'componentDidMount');
 
@@ -34,6 +36,19 @@ describe('ChartGrid - default', () => {
 
   let visConfig;
   let visData;
+  const fakeVis = {
+    params: defaultParams,
+    API: {
+      timeFilter: {
+        getBounds: function () {
+          return calculateBounds({
+            from: moment(1531026000000),
+            to: moment(1531026000000 + 35 * 86400000)
+          });
+        }
+      }
+    }
+  };
 
   beforeEach(() => {
     visData = truncateUnusable(aggResponse.rows[0]);
@@ -45,7 +60,7 @@ describe('ChartGrid - default', () => {
   });
 
   it('should render a full year overview chart grid', () => {
-    visConfig = new CalendarVisConfig(defaultParams);
+    visConfig = new CalendarVisConfig(fakeVis, defaultParams);
     // replicate data
     visData = replicateDate(visData);
     const adjustSize = sinon.spy(CalendarChart.prototype.adjustSize);
@@ -65,7 +80,7 @@ describe('ChartGrid - default', () => {
   });
 
   it('should render a full month overview chart grid', () => {
-    visConfig = new CalendarVisConfig(monthViewParams);
+    visConfig = new CalendarVisConfig(fakeVis, monthViewParams);
     // replicate data
     visData = replicateDate(visData, 3);
     const adjustSize = sinon.spy(CalendarChart.prototype.adjustSize);
