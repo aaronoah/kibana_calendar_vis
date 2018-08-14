@@ -17,10 +17,8 @@
  * under the License.
  */
 
-import { localeUSProvider } from './en_US';
-import { localeUKProvider } from './en_GB';
+import { localeEnProvider } from './en';
 
 export const momentLocales = {
-  en_GB: localeUKProvider,
-  en_US: localeUSProvider
+  en: localeEnProvider
 };

@@ -86,11 +86,12 @@ export class CalendarAxis extends React.Component {
       const sMonth = this.axisScale.getNumericScale(startMonth);
       const eMonth = this.axisScale.getNumericScale(endMonth);
       this.axisScale.setExtents({ scaleMin: startMonth, scaleMax: endMonth });
+      const startWeek = moment(new Date(year, sMonth - 1, 1)).week() % 52;
 
       for(let i = sMonth; i <= eMonth; ++i) {
         const pad = cellSize * (
           (i - sMonth) * 1.5 +
-          (moment(new Date(year, i - 1, 1)).week() - moment(new Date(year, sMonth - 1, 1)).week())
+          (moment(new Date(year, i - 1, 1)).week() - startWeek) % 52
         );
         monthLeftPad.push(pad);
       }

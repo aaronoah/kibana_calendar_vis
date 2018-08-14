@@ -83,6 +83,7 @@ export class ChartGrid extends React.Component {
       const [startMonth, endMonth] = this._getMonthInterval(aggs);
       const startFullDate = new Date(parseInt(year), startMonth - 1, 1);
       const endFullDate = new Date(parseInt(year), endMonth, 1);
+      const startWeek = moment(startFullDate).week() % 52;
 
       d3.select(svg)
         .selectAll('.day')
@@ -97,7 +98,7 @@ export class ChartGrid extends React.Component {
         .attr('height', cellSize)
         .attr('x', (d) => {
           return (moment(d).month() - startMonth + 1) * 1.5 * cellSize +
-            xOffset * 2 + ((moment(d).week() - moment(startFullDate).week()) * cellSize);
+            xOffset * 2 + ((moment(d).week() - startWeek) % 52 * cellSize);
         })
         .attr('y', (d) => {
           return yOffset * 3 + (moment(d).weekday() * cellSize);

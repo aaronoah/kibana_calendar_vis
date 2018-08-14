@@ -208,9 +208,9 @@ export function calendarVisualizationProvider(config) {
     async _render(vislibData, updateStatus) {
       const { aggs, data, params, time, resize } = updateStatus;
 
-      const localeProvider = momentLocales[this.visConfig.get('locale')];
+      const localeProvider = momentLocales.en;
       localeProvider({
-        enable: true
+        dow: config.get('dateFormat:dow')
       });
 
       if(aggs || time || resize || (params && resize) || (data && params) || (data && !aggs && !params && !time && !resize)) {
