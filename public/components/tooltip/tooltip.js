@@ -112,6 +112,7 @@ export class EuiTooltip extends React.Component {
           >
             <div style={this.state.arrowStyles} className="euiToolTip__arrow" />
             <div
+              id="tooltip-content"
               /*
                * Justification for dangerousltSetInnerHTML:
                * The EuiTooltip component wraps the content from point_series tooltip
