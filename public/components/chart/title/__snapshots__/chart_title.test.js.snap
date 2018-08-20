@@ -1,5 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`ChartTitle - default shoudl render a full day overview chart title 1`] = `
+<svg
+  class="calendar-title"
+  height="25"
+  id="title_Jul "
+  width="100%"
+>
+  <text
+    x="20"
+    y="20"
+  >
+    Jul 8th 2018: Count per day
+  </text>
+</svg>
+`;
+
 exports[`ChartTitle - default should render a full month overview chart title 1`] = `
 <svg
   class="calendar-title"

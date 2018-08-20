@@ -95,6 +95,7 @@ export class CalendarChart extends React.Component {
             gridConfig={visConfig.get('grid')}
             vislibData={vislibData}
             axes={visConfig.get('categoryAxes')}
+            dispatcher={dispatcher}
             renderComplete={this.adjustSize}
           />
         </svg>

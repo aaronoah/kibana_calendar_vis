@@ -17,13 +17,15 @@
  * under the License.
  */
 
+import angular from 'angular';
 import _ from 'lodash';
 import { BaseConfig } from './base_config';
 import { AXIS_SCALE_TYPE } from '../components/chart/axis/axis_scale';
 
 export const VIS_CHART_TYPE = {
   HEATMAP_YEAR: 'heatmap_year',
-  HEATMAP_MONTH: 'heatmap_month'
+  HEATMAP_MONTH: 'heatmap_month',
+  HEATMAP_DAY: 'heatmap_day'
 };
 
 const DEFAULT_VIS_CONFIG = {
@@ -45,6 +47,16 @@ export class CalendarVisConfig extends BaseConfig {
     this._values = _.defaultsDeep({}, this._values, DEFAULT_VIS_CONFIG);
   }
 
+  _updateBuckets(interval) {
+    const agg = document.querySelector('#visEditorInterval2');
+    if (agg) {
+      const val = agg.querySelector(`option[label=${interval}]`).value;
+      agg.value = val;
+      angular.element('#visEditorInterval2').change();
+      document.querySelector('button[aria-label="Update the visualization with your changes"]').click();
+    }
+  }
+
   _updateTime() {
     /*
       * Justification for setting params changes:
@@ -58,6 +70,24 @@ export class CalendarVisConfig extends BaseConfig {
     const diff = to.diff(from, 'days');
     if (diff <= 1) {
       // render a day view
+      this.chartType = VIS_CHART_TYPE.HEATMAP_DAY;
+      this.set('type', this.chartType);
+      this.set('categoryAxes', [{
+        id: 'CategoryAxis-1',
+        type: 'category',
+        position: 'top',
+        scale: {
+          type: AXIS_SCALE_TYPE.HOURS
+        },
+      }, {
+        id: 'CategoryAxis-2',
+        type: 'category',
+        position: 'left',
+        scale: {
+          type: AXIS_SCALE_TYPE.MERIDIEM
+        },
+      }]);
+      this._updateBuckets('Hourly');
     } else if (diff > 1 && diff < 32 && new Date(from).getMonth() === new Date(to).getMonth()) {
       // render a month view
       this.chartType = VIS_CHART_TYPE.HEATMAP_MONTH;
@@ -70,6 +100,7 @@ export class CalendarVisConfig extends BaseConfig {
           type: AXIS_SCALE_TYPE.WEEKS
         },
       }]);
+      this._updateBuckets('Daily');
     } else if (diff > 31) {
       // render a year view
       this.chartType = VIS_CHART_TYPE.HEATMAP_YEAR;
@@ -89,6 +120,7 @@ export class CalendarVisConfig extends BaseConfig {
           type: AXIS_SCALE_TYPE.WEEKS
         },
       }]);
+      this._updateBuckets('Daily');
     }
   }
 
@@ -112,6 +144,16 @@ export class CalendarVisConfig extends BaseConfig {
           this.set('grid.cellSize', 35);
         } else if (cellSize > 50) {
           this.set('grid.cellSize', 50);
+        } else {
+          this.set('grid.cellSize', cellSize);
+        }
+        break;
+      case VIS_CHART_TYPE.HEATMAP_DAY:
+        cellSize = containerWidth * 4.5 / 100;
+        if (cellSize < 40) {
+          this.set('grid.cellSize', 40);
+        } else if (cellSize > 50) {
+          this.set('grid.cellSize', 55);
         } else {
           this.set('grid.cellSize', cellSize);
         }

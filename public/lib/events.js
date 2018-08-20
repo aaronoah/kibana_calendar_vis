@@ -49,6 +49,9 @@ export function expandView({ API }) {
   if (day === undefined) {
     start = moment(new Date(year, month - 1, 1));
     end = moment(new Date(year, month, 0));
+  } else {
+    start = moment(new Date(year, month - 1, day, 0));
+    end = moment(new Date(year, month - 1, day, 23));
   }
   const time = {
     from: start,

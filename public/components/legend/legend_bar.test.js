@@ -38,6 +38,8 @@ describe('LegendBar', () => {
   let vislibData;
   let dispatcher;
   let visData;
+  let legendBarWrapper;
+  let renderComplete;
   const fakeConfig = {
     get(key) {
       if (key === 'visualization:colorMapping') {
@@ -95,18 +97,8 @@ describe('LegendBar', () => {
     vislibData = new DataObject(visData, fakeUiState);
     dispatcher = new Dispatcher(CalendarErrorHandler.bindEl(document.createElement('div')));
     dispatcher.addConfig(fakeConfig);
-  });
-
-  afterEach(() => {
-    visData = null;
-    visConfig = null;
-    vislibData = null;
-  });
-
-  it('should render a full LegendBar component, default position to the right', () => {
-    const renderComplete = jest.fn();
-    sinon.spy(LegendBar.prototype, 'componentDidMount');
-    const legendBarWrapper = mount(
+    renderComplete = jest.fn();
+    legendBarWrapper = mount(
       <div className={containerName}>
         <div className={legendName}>
           <LegendBar
@@ -121,42 +113,35 @@ describe('LegendBar', () => {
         </div>
       </div>
     );
-    expect(renderComplete.mock.calls.length).toBe(1);
-    expect(LegendBar.prototype.componentDidMount.calledOnce).toEqual(true);
-    expect(legendBarWrapper.find('li.legend-value')).toHaveLength(4);
-    expect(legendBarWrapper).toMatchSnapshot();
+  });
+
+  afterEach(() => {
+    visData = null;
+    visConfig = null;
+    vislibData = null;
     legendBarWrapper.unmount();
   });
 
+  it('should render a full LegendBar component, default position to the right', () => {
+    sinon.spy(LegendBar.prototype, 'componentDidMount');
+    expect(renderComplete.mock.calls.length).toBe(1);
+    expect(legendBarWrapper.find('li.legend-value')).toHaveLength(4);
+    expect(legendBarWrapper).toMatchSnapshot();
+  });
+
   it('should collapse and expand when click the arrow', () => {
-    const legendBarWrapper = mount(
-      <div className={containerName}>
-        <div className={legendName}>
-          <LegendBar
-            visConfig={visConfig}
-            colorFunc={vislibData.getColorFunc()}
-            position={legendPosition[defaultParams.legendPosition]}
-            dispatcher={dispatcher}
-            setUiState={setUiState}
-            getUiState={getUiState}
-            renderComplete={jest.fn()}
-          />
-        </div>
-      </div>
-    );
     legendBarWrapper.find('button').simulate('click');
     expect(legendBarWrapper.find(LegendBar).instance().state.open).toEqual(false);
     expect(legendBarWrapper).toMatchSnapshot();
 
     legendBarWrapper.find('button').simulate('click');
     expect(legendBarWrapper.find(LegendBar).instance().state.open).toEqual(true);
-    legendBarWrapper.unmount();
   });
 
   it('should dim and undim the data labels when mouseover and mouseout the legends', () => {
     visConfig.set('enableHover', true);
     sinon.spy(dispatcher, 'addEvent');
-    const legendBarWrapper = mount(
+    legendBarWrapper = mount(
       <div className={containerName}>
         <div className={legendName}>
           <LegendBar
@@ -166,16 +151,17 @@ describe('LegendBar', () => {
             dispatcher={dispatcher}
             setUiState={setUiState}
             getUiState={getUiState}
-            renderComplete={jest.fn()}
+            renderComplete={renderComplete}
           />
         </div>
       </div>
     );
+
     legendBarWrapper.find('li.legend-value').at(0).simulate('mouseenter');
     expect(dispatcher.addEvent.calledOnce).toEqual(true);
+
     legendBarWrapper.find('li.legend-value').at(0).simulate('mouseleave');
     expect(dispatcher.addEvent.calledTwice).toEqual(true);
-    legendBarWrapper.unmount();
   });
 
 });

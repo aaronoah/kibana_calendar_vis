@@ -21,7 +21,7 @@ import d3 from 'd3';
 import moment from 'moment';
 import { AxisConfig } from './axis_config';
 import { CalendarAxisScale } from './axis_scale';
-import { getTimeFormat, getHeatmapColors } from '../../../utils';
+import { TIME_FORMAT, getHeatmapColors } from '../../../utils';
 
 export class ValueAxis {
   constructor(visConfig, axisConfig, vis) {
@@ -79,7 +79,7 @@ export class ValueAxis {
 
   drawValues(vislibData) {
     const rows = vislibData.getData();
-    const yearlyData = rows.map(r => r.series[0].values);
+    const seriesData = rows.map(r => r.series[0].values);
     const colorsNumber = this.visConfig.get('colorsNumber');
     const domain = this.axisScale.getExtents(vislibData);
     const labels = this._getHeatmapLabels(domain);
@@ -118,9 +118,9 @@ export class ValueAxis {
       return color(label(d));
     }
 
-    yearlyData.forEach(yrData => {
-      yrData.forEach(v => {
-        const id = '#day_' + moment(v.x).format(getTimeFormat());
+    seriesData.forEach(d => {
+      d.forEach(v => {
+        const id = '#day-' + moment(v.x).format(TIME_FORMAT);
         d3.select(id)
           .classed('data-day', true)
           .attr('data-label', label(v))

@@ -34,6 +34,8 @@ export class ChartTitle extends React.Component {
       labelToShow = moment(dateRef).format('MMM YYYY') + ': ' + labelToShow + ' per month';
     } else if (chartType === VIS_CHART_TYPE.HEATMAP_YEAR) {
       labelToShow = moment(dateRef).format('YYYY') + ': ' + labelToShow + ' per year';
+    } else if (chartType === VIS_CHART_TYPE.HEATMAP_DAY) {
+      labelToShow = moment(dateRef).format('MMM Do YYYY') + ': ' + labelToShow + ' per day';
     }
 
     this.state = {

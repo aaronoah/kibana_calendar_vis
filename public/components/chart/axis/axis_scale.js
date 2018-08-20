@@ -20,11 +20,13 @@
 import d3 from 'd3';
 import _ from 'lodash';
 import moment from 'moment';
-import { getMonthFormat, getWeekdayFormat, getMonthShortFormat, getWeekdayShortFormat } from '../../../utils';
+import { MONTH_FORMAT, WEEKDAY_FORMAT, MONTH_SHORT_FORMAT, WEEKDAY_SHORT_FORMAT } from '../../../utils';
 
 export const AXIS_SCALE_TYPE = {
   MONTHS: 'MONTHS',
-  WEEKS: 'WEEKS'
+  WEEKS: 'WEEKS',
+  HOURS: 'HOURS',
+  MERIDIEM: 'MERIDIEM'
 };
 
 export class CalendarAxisScale {
@@ -48,6 +50,15 @@ export class CalendarAxisScale {
         } else {
           this.extents = moment.weekdays();
         }
+      } else if (this.scaleType === AXIS_SCALE_TYPE.HOURS) {
+        this.extents = [
+          '0:00', '1:00', '2:00', '3:00', '4:00', '5:00', '6:00',
+          '7:00', '8:00', '9:00', '10:00', '11:00', '12:00'
+        ];
+      } else if (this.scaleType === AXIS_SCALE_TYPE.MERIDIEM) {
+        const morning = moment(new Date(2000, 0, 1, 1)).format('A');
+        const afternoon = moment(new Date(2000, 0, 1, 13)).format('A');
+        this.extents = [morning, afternoon];
       }
     }
   }
@@ -86,10 +97,10 @@ export class CalendarAxisScale {
       const startDate = _.head(values).x;
       const isShort = this.axisConfig.get('labels.truncate');
       if(this.scaleType === AXIS_SCALE_TYPE.MONTHS) {
-        const formatter = isShort ? getMonthShortFormat() : getMonthFormat();
+        const formatter = isShort ? MONTH_SHORT_FORMAT : MONTH_FORMAT;
         return moment(startDate).format(formatter);
       } else if(this.scaleType === AXIS_SCALE_TYPE.WEEKS) {
-        const formatter = isShort ? getWeekdayShortFormat() : getWeekdayFormat();
+        const formatter = isShort ? WEEKDAY_SHORT_FORMAT : WEEKDAY_FORMAT;
         return moment(startDate).format(formatter);
       } else {
         throw new TypeError(`invalid scale type: ${this.scaleType}`);
@@ -111,10 +122,10 @@ export class CalendarAxisScale {
       const endDate = _.last(values).x;
       const isShort = this.axisConfig.get('labels.truncate');
       if (this.scaleType === AXIS_SCALE_TYPE.MONTHS) {
-        const formatter = isShort ? getMonthShortFormat() : getMonthFormat();
+        const formatter = isShort ? MONTH_SHORT_FORMAT : MONTH_FORMAT;
         return moment(endDate).format(formatter);
       } else if (this.scaleType === AXIS_SCALE_TYPE.WEEKS) {
-        const formatter = isShort ? getWeekdayShortFormat() : getWeekdayFormat();
+        const formatter = isShort ? WEEKDAY_SHORT_FORMAT : WEEKDAY_FORMAT;
         return moment(endDate).format(formatter);
       } else {
         throw new TypeError(`invalid scale type: ${this.scaleType}`);

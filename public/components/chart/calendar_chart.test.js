@@ -22,7 +22,7 @@ import moment from 'moment';
 import { shallow } from 'enzyme';
 import { CalendarChart } from './calendar_chart';
 import { CalendarVisConfig, Dispatcher } from '../../lib';
-import { defaultParams, monthViewParams } from '../../default_settings';
+import { defaultParams, monthViewParams, dayViewParams } from '../../default_settings';
 import aggResponse from '../../__tests__/agg_response.json';
 import { truncateUnusable, replicateDate } from '../../../test/jest/utils';
 import { calculateBounds } from 'ui/timefilter/get_time';
@@ -76,6 +76,22 @@ describe('CalendarChart', () => {
     visConfig = new CalendarVisConfig(fakeVis, monthViewParams);
     // replicate data
     visData = replicateDate(visData, 3);
+
+    const renderComplete = jest.fn();
+    const chartWrapper = shallow(<CalendarChart
+      id={`chart_${visData.label.slice(0, 4)}`}
+      visConfig={visConfig}
+      vislibData={visData}
+      dispatcher={dispatcher}
+      renderComplete={renderComplete}
+    />);
+    expect(chartWrapper).toMatchSnapshot();
+  });
+
+  it('should render a day view chart with two category axes, one grid and a title', () => {
+    visConfig = new CalendarVisConfig(fakeVis, dayViewParams);
+    // replicate data
+    visData = replicateDate(visData, 0);
 
     const renderComplete = jest.fn();
     const chartWrapper = shallow(<CalendarChart

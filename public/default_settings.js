@@ -122,3 +122,54 @@ export const monthViewParams = {
     yOffset: 20
   }
 };
+
+export const dayViewParams = {
+  // month view params setup for calendar visualization
+  type: VIS_CHART_TYPE.HEATMAP_DAY,
+  handleNoResults: false,
+  addTooltip: true,
+  addLegend: true,
+  enableHover: false,
+  legendPosition: 'right',
+  times: [],
+  colorsNumber: 4,
+  colorSchema: 'Greens',
+  setColorRange: false,
+  colorsRange: [],
+  invertColors: false,
+  percentageMode: false,
+  locale: 'en_US',
+  categoryAxes: [{
+    id: 'CategoryAxis-1',
+    type: 'category',
+    position: 'top',
+    scale: {
+      type: AXIS_SCALE_TYPE.HOURS
+    },
+  }, {
+    id: 'CategoryAxis-2',
+    type: 'category',
+    position: 'left',
+    scale: {
+      type: AXIS_SCALE_TYPE.MERIDIEM
+    },
+  }],
+  valueAxes: [{
+    show: false,
+    id: 'ValueAxis-1',
+    type: 'value',
+    scale: {
+      type: 'linear',
+      defaultYExtents: false,
+    },
+    labels: {
+      show: false,
+    }
+  }],
+  grid: {
+    style: GRID_STYLE.RECT,
+    cellSize: 40,
+    xOffset: 20,
+    yOffset: 20
+  }
+};

@@ -1,5 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`CalendarAxis - default should render a meridiem axis 1`] = `
+<svg
+  id="meridiem-labels"
+>
+  <text
+    class="meridiem-label"
+    style="font-size: 12;"
+    x="5"
+    y="80.8"
+  >
+    AM
+  </text>
+  <text
+    class="meridiem-label"
+    style="font-size: 12;"
+    x="5"
+    y="122.8"
+  >
+    PM
+  </text>
+</svg>
+`;
+
 exports[`CalendarAxis - default should render a month axis 1`] = `
 <svg
   id="month-labels"
@@ -19,10 +42,10 @@ exports[`CalendarAxis - default should render a month axis 1`] = `
 
 exports[`CalendarAxis - default should render a week axis 1`] = `
 <svg
-  id="day-labels"
+  id="weekday-labels"
 >
   <text
-    class="day-label"
+    class="weekday-label"
     style="font-size: 10.5;"
     x="5"
     y="68.3"
@@ -30,7 +53,7 @@ exports[`CalendarAxis - default should render a week axis 1`] = `
     Sun
   </text>
   <text
-    class="day-label"
+    class="weekday-label"
     style="font-size: 10.5;"
     x="5"
     y="84.05"
@@ -38,7 +61,7 @@ exports[`CalendarAxis - default should render a week axis 1`] = `
     Mon
   </text>
   <text
-    class="day-label"
+    class="weekday-label"
     style="font-size: 10.5;"
     x="5"
     y="99.8"
@@ -46,7 +69,7 @@ exports[`CalendarAxis - default should render a week axis 1`] = `
     Tue
   </text>
   <text
-    class="day-label"
+    class="weekday-label"
     style="font-size: 10.5;"
     x="5"
     y="115.55"
@@ -54,7 +77,7 @@ exports[`CalendarAxis - default should render a week axis 1`] = `
     Wed
   </text>
   <text
-    class="day-label"
+    class="weekday-label"
     style="font-size: 10.5;"
     x="5"
     y="131.3"
@@ -62,7 +85,7 @@ exports[`CalendarAxis - default should render a week axis 1`] = `
     Thu
   </text>
   <text
-    class="day-label"
+    class="weekday-label"
     style="font-size: 10.5;"
     x="5"
     y="147.05"
@@ -70,12 +93,123 @@ exports[`CalendarAxis - default should render a week axis 1`] = `
     Fri
   </text>
   <text
-    class="day-label"
+    class="weekday-label"
     style="font-size: 10.5;"
     x="5"
     y="162.8"
   >
     Sat
+  </text>
+</svg>
+`;
+
+exports[`CalendarAxis - default should render an hour axis 1`] = `
+<svg
+  id="hours-labels"
+>
+  <text
+    class="hour-label"
+    style="font-size: 12;"
+    x="40"
+    y="50"
+  >
+    0:00
+  </text>
+  <text
+    class="hour-label"
+    style="font-size: 12;"
+    x="80"
+    y="50"
+  >
+    1:00
+  </text>
+  <text
+    class="hour-label"
+    style="font-size: 12;"
+    x="120"
+    y="50"
+  >
+    2:00
+  </text>
+  <text
+    class="hour-label"
+    style="font-size: 12;"
+    x="160"
+    y="50"
+  >
+    3:00
+  </text>
+  <text
+    class="hour-label"
+    style="font-size: 12;"
+    x="200"
+    y="50"
+  >
+    4:00
+  </text>
+  <text
+    class="hour-label"
+    style="font-size: 12;"
+    x="240"
+    y="50"
+  >
+    5:00
+  </text>
+  <text
+    class="hour-label"
+    style="font-size: 12;"
+    x="280"
+    y="50"
+  >
+    6:00
+  </text>
+  <text
+    class="hour-label"
+    style="font-size: 12;"
+    x="320"
+    y="50"
+  >
+    7:00
+  </text>
+  <text
+    class="hour-label"
+    style="font-size: 12;"
+    x="360"
+    y="50"
+  >
+    8:00
+  </text>
+  <text
+    class="hour-label"
+    style="font-size: 12;"
+    x="400"
+    y="50"
+  >
+    9:00
+  </text>
+  <text
+    class="hour-label"
+    style="font-size: 12;"
+    x="440"
+    y="50"
+  >
+    10:00
+  </text>
+  <text
+    class="hour-label"
+    style="font-size: 12;"
+    x="480"
+    y="50"
+  >
+    11:00
+  </text>
+  <text
+    class="hour-label"
+    style="font-size: 12;"
+    x="520"
+    y="50"
+  >
+    12:00
   </text>
 </svg>
 `;

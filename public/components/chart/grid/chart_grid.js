@@ -23,8 +23,9 @@ import _ from 'lodash';
 import moment from 'moment';
 import { GridConfig } from './grid_config';
 import { VIS_CHART_TYPE } from '../../../lib';
-import { getMonthInterval, getTimeFormat } from '../../../utils';
+import { getMonthInterval, TIME_FORMAT } from '../../../utils';
 import './chart_grid.less';
+import { expandView } from '../../../lib/events';
 
 export class ChartGrid extends React.Component {
   constructor(props) {
@@ -36,6 +37,7 @@ export class ChartGrid extends React.Component {
 
   componentDidMount() {
     this._render(this.props.vislibData);
+    this.props.renderComplete();
   }
 
   render() {
@@ -44,7 +46,7 @@ export class ChartGrid extends React.Component {
     );
   }
 
-  async _render(vislibData) {
+  _render(vislibData) {
 
     const [cellSize, xOffset, yOffset] = this.gridConfig.get(['cellSize', 'xOffset', 'yOffset']);
     const { series } = vislibData;
@@ -58,7 +60,6 @@ export class ChartGrid extends React.Component {
     };
 
     this._drawGrid(this.chartGrid.current, wrapper);
-    this.props.renderComplete();
   }
 
   componentWillUnmount() {
@@ -76,8 +77,12 @@ export class ChartGrid extends React.Component {
     return new Date(_.head(values).x).getMonth();
   }
 
+  _getDate(values) {
+    return new Date(_.head(values).x).getDate();
+  }
+
   _drawGrid(svg, { year, aggs, cellSize, xOffset, yOffset }) {
-    const { type } = this.props;
+    const { type, dispatcher } = this.props;
 
     if(type === VIS_CHART_TYPE.HEATMAP_YEAR) {
       const [startMonth, endMonth] = this._getMonthInterval(aggs);
@@ -90,10 +95,12 @@ export class ChartGrid extends React.Component {
         .data(d3.time.days(startFullDate, endFullDate))
         .enter().append('g').append('rect')
         .attr('id', (d) => {
-          return 'day_' + moment(d).format(getTimeFormat());
+          return 'day-' + moment(d).format(TIME_FORMAT);
         })
         .classed('day', true)
+        .attr('data-year', () => year)
         .attr('data-month', (d) => `${moment(d).month() + 1}`)
+        .attr('data-day', (d) => `${moment(d).date()}`)
         .attr('width', cellSize)
         .attr('height', cellSize)
         .attr('x', (d) => {
@@ -105,6 +112,10 @@ export class ChartGrid extends React.Component {
         })
         .attr('rx', cellSize * 1 / 10)
         .attr('ry', cellSize * 1 / 10);
+      dispatcher.newMapping()
+        .addSource('.data-day')
+        .addDataTarget('[data-day]')
+        .addEvent('click', expandView);
     } else if (type === VIS_CHART_TYPE.HEATMAP_MONTH) {
       const month = this._getMonth(aggs);
       const startDate = new Date(parseInt(year), month, 1);
@@ -115,9 +126,12 @@ export class ChartGrid extends React.Component {
         .data(d3.time.days(startDate, endDate))
         .enter().append('g').append('rect')
         .attr('id', (d) => {
-          return 'day_' + moment(d).format(getTimeFormat());
+          return 'day-' + moment(d).format(TIME_FORMAT);
         })
         .classed('day', true)
+        .attr('data-year', () => year)
+        .attr('data-month', (d) => `${moment(d).month() + 1}`)
+        .attr('data-day', (d) => `${moment(d).date()}`)
         .attr('width', cellSize)
         .attr('height', cellSize)
         .attr('x', (d) => {
@@ -125,6 +139,35 @@ export class ChartGrid extends React.Component {
         })
         .attr('y', (d) => {
           return yOffset * 3 + ((moment(d).week() - moment(startDate).week()) * cellSize);
+        })
+        .attr('rx', cellSize * 1 / 10)
+        .attr('ry', cellSize * 1 / 10);
+
+      dispatcher.newMapping()
+        .addSource('.data-day')
+        .addDataTarget('[data-day]')
+        .addEvent('click', expandView);
+    } else if (type === VIS_CHART_TYPE.HEATMAP_DAY) {
+      const month = this._getMonth(aggs);
+      const date = this._getDate(aggs);
+      const startTime = new Date(parseInt(year), month, date, 0);
+      const endTime = new Date(parseInt(year), month, date + 1, 0);
+
+      d3.select(svg)
+        .selectAll('.hour')
+        .data(d3.time.hours(startTime, endTime))
+        .enter().append('g').append('rect')
+        .attr('id', (d) => {
+          return 'day-' + moment(d).format(TIME_FORMAT);
+        })
+        .classed('hour', true)
+        .attr('width', cellSize)
+        .attr('height', cellSize)
+        .attr('x', (d) => {
+          return xOffset * 2 + (moment(d).hour() % 12 * cellSize);
+        })
+        .attr('y', (d) => {
+          return yOffset * 3 + (Math.floor(moment(d).hour() / 12) * cellSize);
         })
         .attr('rx', cellSize * 1 / 10)
         .attr('ry', cellSize * 1 / 10);

@@ -21,21 +21,19 @@ import React from 'react';
 import moment from 'moment';
 import { findDOMNode } from 'react-dom';
 import { mount } from 'enzyme';
-import sinon from 'sinon';
 import { ChartGrid } from './chart_grid';
+import { Dispatcher } from '../../../lib';
 import { CalendarVisConfig } from '../../../lib/calendar_vis_config';
-import { defaultParams, monthViewParams } from '../../../default_settings';
+import { defaultParams, monthViewParams, dayViewParams } from '../../../default_settings';
 import aggResponse from '../../../__tests__/agg_response.json';
-import { CalendarChart } from '../calendar_chart';
 import { truncateUnusable, replicateDate } from '../../../../test/jest/utils';
 import { calculateBounds } from 'ui/timefilter/get_time';
-
-sinon.spy(ChartGrid.prototype, 'componentDidMount');
 
 describe('ChartGrid - default', () => {
 
   let visConfig;
   let visData;
+  let dispatcher;
   const fakeVis = {
     params: defaultParams,
     API: {
@@ -52,6 +50,7 @@ describe('ChartGrid - default', () => {
 
   beforeEach(() => {
     visData = truncateUnusable(aggResponse.rows[0]);
+    dispatcher = new Dispatcher().addContainer(document.createElement('div'));
   });
 
   afterEach(() => {
@@ -63,18 +62,17 @@ describe('ChartGrid - default', () => {
     visConfig = new CalendarVisConfig(fakeVis, defaultParams);
     // replicate data
     visData = replicateDate(visData);
-    const adjustSize = sinon.spy(CalendarChart.prototype.adjustSize);
+    const adjustSize = jest.fn();
     const gridWrapper = mount(
       <ChartGrid
         type={visConfig.get('type')}
         gridConfig={visConfig.get('grid')}
         vislibData={visData}
         axes={visConfig.get('categoryAxes')}
+        dispatcher={dispatcher}
         renderComplete={adjustSize}
       />
     );
-    expect(ChartGrid.prototype.componentDidMount.called).toEqual(true);
-    expect(adjustSize.calledOnce).toEqual(true);
     const grid = gridWrapper.instance();
     expect(findDOMNode(grid)).toMatchSnapshot();
   });
@@ -83,18 +81,36 @@ describe('ChartGrid - default', () => {
     visConfig = new CalendarVisConfig(fakeVis, monthViewParams);
     // replicate data
     visData = replicateDate(visData, 3);
-    const adjustSize = sinon.spy(CalendarChart.prototype.adjustSize);
+    const adjustSize = jest.fn();
     const gridWrapper = mount(
       <ChartGrid
         type={visConfig.get('type')}
         gridConfig={visConfig.get('grid')}
         vislibData={visData}
         axes={visConfig.get('categoryAxes')}
+        dispatcher={dispatcher}
         renderComplete={adjustSize}
       />
     );
-    expect(ChartGrid.prototype.componentDidMount.called).toEqual(true);
-    expect(adjustSize.calledOnce).toEqual(true);
+    const grid = gridWrapper.instance();
+    expect(findDOMNode(grid)).toMatchSnapshot();
+  });
+
+  it('should render a full day overview chart grid', () => {
+    visConfig = new CalendarVisConfig(fakeVis, dayViewParams);
+    // replicate data
+    visData = replicateDate(visData, 0);
+    const adjustSize = jest.fn();
+    const gridWrapper = mount(
+      <ChartGrid
+        type={visConfig.get('type')}
+        gridConfig={visConfig.get('grid')}
+        vislibData={visData}
+        axes={visConfig.get('categoryAxes')}
+        dispatcher={dispatcher}
+        renderComplete={adjustSize}
+      />
+    );
     const grid = gridWrapper.instance();
     expect(findDOMNode(grid)).toMatchSnapshot();
   });

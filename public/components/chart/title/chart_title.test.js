@@ -85,4 +85,19 @@ describe('ChartTitle - default', () => {
     expect(findDOMNode(title)).toMatchSnapshot();
   });
 
+  it('shoudl render a full day overview chart title', () => {
+    const renderComplete = jest.fn();
+    const titleWrapper = mount(
+      <ChartTitle
+        gridConfig={visConfig.get('grid')}
+        label={visData.yAxisLabel}
+        dateRef={visData.series[0].values[0].x}
+        chartType={VIS_CHART_TYPE.HEATMAP_DAY}
+        renderComplete={renderComplete}
+      />
+    );
+    const title = titleWrapper.instance();
+    expect(findDOMNode(title)).toMatchSnapshot();
+  })
+
 });

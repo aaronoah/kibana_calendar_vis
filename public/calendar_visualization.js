@@ -28,7 +28,7 @@ import { CalendarVisConfig, calendarDataObjectProvider, Dispatcher, CalendarErro
 import { ValueAxis } from './components/chart/axis/value_axis';
 import { KbnError, NoResults, SearchTimeout } from 'ui/errors';
 import { EuiTooltip } from './components/tooltip';
-import { HashTable, getTimeFormat } from './utils';
+import { HashTable, TIME_FORMAT } from './utils';
 import { InvalidBucketError } from './errors';
 import { containerName, chartCanvas, chartWrapperName, legendName, tooltipId, tooltipName } from './default_settings';
 import { momentLocales } from './i18n';
@@ -270,7 +270,7 @@ export function calendarVisualizationProvider(config) {
         visData.rows.forEach(r => {
           const vals = r.series[0].values;
           vals.forEach(v => {
-            const dayId = 'day_' + moment(v.x).format(getTimeFormat());
+            const dayId = 'day-' + moment(v.x).format(TIME_FORMAT);
             this.hashTable.put(dayId, v);
           });
         });

@@ -49,10 +49,14 @@ export class CalendarAxis extends React.Component {
   render() {
     const type = this.axisConfig.get('scale.type');
     let axisId;
-    if(type === AXIS_SCALE_TYPE.MONTHS) {
+    if (type === AXIS_SCALE_TYPE.MONTHS) {
       axisId = 'month-labels';
-    }else if(type === AXIS_SCALE_TYPE.WEEKS) {
-      axisId = 'day-labels';
+    } else if(type === AXIS_SCALE_TYPE.WEEKS) {
+      axisId = 'weekday-labels';
+    } else if (type === AXIS_SCALE_TYPE.HOURS) {
+      axisId = 'hours-labels';
+    } else if (type === AXIS_SCALE_TYPE.MERIDIEM) {
+      axisId = 'meridiem-labels';
     }
     return (
       <svg id={axisId} ref={this.axis} />
@@ -112,10 +116,19 @@ export class CalendarAxis extends React.Component {
     } else if (type === AXIS_SCALE_TYPE.WEEKS) {
       this.axisScale.extents.forEach(function (d, i) {
         axis.append('text')
-          .attr('class', 'day-label')
+          .attr('class', 'weekday-label')
           .attr('x', ((i + 0.15) * padding) + xOffset * 2)
           .attr('y', yOffset * 2.5)
           .style('font-size', cellSize * 4 / 10)
+          .text(d);
+      });
+    } else if (type === AXIS_SCALE_TYPE.HOURS) {
+      this.axisScale.extents.forEach(function (d, i) {
+        axis.append('text')
+          .attr('class', 'hour-label')
+          .attr('x', i * padding + xOffset * 2)
+          .attr('y', yOffset * 2.5)
+          .style('font-size', cellSize * 3 / 10)
           .text(d);
       });
     }
@@ -123,16 +136,24 @@ export class CalendarAxis extends React.Component {
 
   _drawLeft() {
     const [type, cellSize, padding, yOffset] = this.axisConfig.get(['scale.type', 'cellSize', 'padding', 'yOffset']);
+    const axis = d3.select(this.axis.current);
 
     if(type === AXIS_SCALE_TYPE.WEEKS) {
-      const dayLabels = d3.select(this.axis.current);
-
       this.axisScale.extents.forEach(function (d, i) {
-        dayLabels.append('text')
-          .attr('class', 'day-label')
+        axis.append('text')
+          .attr('class', 'weekday-label')
           .attr('y', () => (yOffset * 3.1) + ((i + 0.4) * padding))
           .attr('x', 5)
           .style('font-size', cellSize * 7 / 10)
+          .text(d);
+      });
+    } else if (type === AXIS_SCALE_TYPE.MERIDIEM) {
+      this.axisScale.extents.forEach(function (d, i) {
+        axis.append('text')
+          .attr('class', 'meridiem-label')
+          .attr('y', () => (yOffset * 3.2) + ((i + 0.4) * padding))
+          .attr('x', 5)
+          .style('font-size', cellSize * 3 / 10)
           .text(d);
       });
     }

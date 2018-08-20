@@ -28,15 +28,15 @@ export function getMonthInterval(startDate, endDate) {
   return [startMonth, endMonth];
 }
 
-export const getTimeFormat = () => 'MM-DD-YYYY';
+export const TIME_FORMAT = 'MM-DD-YYYY-h-mm-A';
 
-export const getMonthFormat = () => 'MMMM';
+export const MONTH_FORMAT = 'MMMM';
 
-export const getMonthShortFormat = () => 'MMM';
+export const MONTH_SHORT_FORMAT = 'MMM';
 
-export const getWeekdayFormat = () => 'dddd';
+export const WEEKDAY_FORMAT = 'dddd';
 
-export const getWeekdayShortFormat = () => 'ddd';
+export const WEEKDAY_SHORT_FORMAT = 'ddd';
 
 export class HashTable {
   constructor(configurable = true) {

@@ -43,6 +43,8 @@ export class AxisConfig extends BaseConfig {
         this._values.padding = this._values.cellSize * 3;
       } else if (this._values.scale.type === AXIS_SCALE_TYPE.WEEKS) {
         this._values.padding = this._values.cellSize;
+      } else if (this._values.scale.type === AXIS_SCALE_TYPE.HOURS) {
+        this._values.padding = this._values.cellSize;
       }
     } else if (this._values.position === 'left') {
       this._values.padding = this._values.cellSize * 1.05;
@@ -69,14 +71,10 @@ export class AxisConfig extends BaseConfig {
     const { type } = this._values.scale;
     switch(chartType) {
       case VIS_CHART_TYPE.HEATMAP_YEAR:
-        if(position === 'top') {
-          if(type !== AXIS_SCALE_TYPE.MONTHS) {
-            throw new TypeError(`axis of id: ${this._values.id} has invalid scale: ${type}`);
-          }
-        }else if(position === 'left') {
-          if(type !== AXIS_SCALE_TYPE.WEEKS) {
-            throw new TypeError(`axis of id: ${this._values.id} has invalid scale: ${type}`);
-          }
+        if (position === 'top' && type !== AXIS_SCALE_TYPE.MONTHS) {
+          throw new TypeError(`axis of id: ${this._values.id} has invalid scale: ${type}`);
+        } else if (position === 'left' && type !== AXIS_SCALE_TYPE.WEEKS) {
+          throw new TypeError(`axis of id: ${this._values.id} has invalid scale: ${type}`);
         }
         break;
       case VIS_CHART_TYPE.HEATMAP_MONTH:
@@ -84,6 +82,12 @@ export class AxisConfig extends BaseConfig {
           throw new TypeError(`axis of id: ${this._values.id} has invalid scale: ${type}`);
         }
         break;
+      case VIS_CHART_TYPE.HEATMAP_DAY:
+        if (position === 'top' && type !== AXIS_SCALE_TYPE.HOURS) {
+          throw new TypeError(`axis of id: ${this._values.id} has invalid scale: ${type}`);
+        } else if (position === 'left' && type !== AXIS_SCALE_TYPE.MERIDIEM) {
+          throw new TypeError(`axis of id: ${this._values.id} has invalid scale: ${type}`);
+        }
     }
 
     this._values.isValidated = true;

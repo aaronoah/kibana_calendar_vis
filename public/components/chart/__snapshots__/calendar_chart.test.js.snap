@@ -1,5 +1,219 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`CalendarChart should render a day view chart with two category axes, one grid and a title 1`] = `
+<svg
+  height="100%"
+  width="100%"
+>
+  <ChartTitle
+    chartType="heatmap_day"
+    dateRef={1531026000000}
+    gridConfig={
+      Object {
+        "cellSize": 40,
+        "style": "rect",
+        "xOffset": 20,
+        "yOffset": 20,
+      }
+    }
+    label="Count"
+    renderComplete={[Function]}
+  />
+  <CalendarAxis
+    axisConfig={
+      Object {
+        "id": "CategoryAxis-1",
+        "position": "top",
+        "scale": Object {
+          "type": "HOURS",
+        },
+        "type": "category",
+      }
+    }
+    dispatcher={
+      Dispatcher {
+        "API": null,
+        "config": null,
+        "container": <div />,
+        "dataTarget": null,
+        "src": null,
+      }
+    }
+    gridConfig={
+      Object {
+        "cellSize": 40,
+        "style": "rect",
+        "xOffset": 20,
+        "yOffset": 20,
+      }
+    }
+    key="0"
+    renderComplete={[Function]}
+    type="heatmap_day"
+    vislibData={
+      Object {
+        "indexPattern": "c85d40c0-837f-11e8-aa0a-c1e0f6dce300",
+        "label": "2018: @timestamp per year",
+        "ordered": Object {
+          "date": true,
+          "interval": "P1D",
+          "max": "2018-07-09T14:14:22.521Z",
+          "min": "2018-07-08T05:00:00.000Z",
+        },
+        "series": Array [
+          Object {
+            "aggId": "1",
+            "aggLabel": "Count",
+            "count": 0,
+            "label": "Count",
+            "values": Array [
+              Object {
+                "extraMetrics": Array [],
+                "series": "Count",
+                "x": 1531026000000,
+                "y": 14,
+              },
+            ],
+          },
+        ],
+        "yAxisLabel": "Count",
+      }
+    }
+  />
+  <CalendarAxis
+    axisConfig={
+      Object {
+        "id": "CategoryAxis-2",
+        "position": "left",
+        "scale": Object {
+          "type": "MERIDIEM",
+        },
+        "type": "category",
+      }
+    }
+    dispatcher={
+      Dispatcher {
+        "API": null,
+        "config": null,
+        "container": <div />,
+        "dataTarget": null,
+        "src": null,
+      }
+    }
+    gridConfig={
+      Object {
+        "cellSize": 40,
+        "style": "rect",
+        "xOffset": 20,
+        "yOffset": 20,
+      }
+    }
+    key="1"
+    renderComplete={[Function]}
+    type="heatmap_day"
+    vislibData={
+      Object {
+        "indexPattern": "c85d40c0-837f-11e8-aa0a-c1e0f6dce300",
+        "label": "2018: @timestamp per year",
+        "ordered": Object {
+          "date": true,
+          "interval": "P1D",
+          "max": "2018-07-09T14:14:22.521Z",
+          "min": "2018-07-08T05:00:00.000Z",
+        },
+        "series": Array [
+          Object {
+            "aggId": "1",
+            "aggLabel": "Count",
+            "count": 0,
+            "label": "Count",
+            "values": Array [
+              Object {
+                "extraMetrics": Array [],
+                "series": "Count",
+                "x": 1531026000000,
+                "y": 14,
+              },
+            ],
+          },
+        ],
+        "yAxisLabel": "Count",
+      }
+    }
+  />
+  <ChartGrid
+    axes={
+      Array [
+        Object {
+          "id": "CategoryAxis-1",
+          "position": "top",
+          "scale": Object {
+            "type": "HOURS",
+          },
+          "type": "category",
+        },
+        Object {
+          "id": "CategoryAxis-2",
+          "position": "left",
+          "scale": Object {
+            "type": "MERIDIEM",
+          },
+          "type": "category",
+        },
+      ]
+    }
+    dispatcher={
+      Dispatcher {
+        "API": null,
+        "config": null,
+        "container": <div />,
+        "dataTarget": null,
+        "src": null,
+      }
+    }
+    gridConfig={
+      Object {
+        "cellSize": 40,
+        "style": "rect",
+        "xOffset": 20,
+        "yOffset": 20,
+      }
+    }
+    renderComplete={[Function]}
+    type="heatmap_day"
+    vislibData={
+      Object {
+        "indexPattern": "c85d40c0-837f-11e8-aa0a-c1e0f6dce300",
+        "label": "2018: @timestamp per year",
+        "ordered": Object {
+          "date": true,
+          "interval": "P1D",
+          "max": "2018-07-09T14:14:22.521Z",
+          "min": "2018-07-08T05:00:00.000Z",
+        },
+        "series": Array [
+          Object {
+            "aggId": "1",
+            "aggLabel": "Count",
+            "count": 0,
+            "label": "Count",
+            "values": Array [
+              Object {
+                "extraMetrics": Array [],
+                "series": "Count",
+                "x": 1531026000000,
+                "y": 14,
+              },
+            ],
+          },
+        ],
+        "yAxisLabel": "Count",
+      }
+    }
+  />
+</svg>
+`;
+
 exports[`CalendarChart should render a month view chart with one category axis, one grid and a title 1`] = `
 <svg
   height="100%"
@@ -91,216 +305,6 @@ exports[`CalendarChart should render a month view chart with one category axis, 
                 "x": 1531285200000,
                 "y": 2,
               },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1531371600000,
-                "y": 3,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1531458000000,
-                "y": 4,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1531544400000,
-                "y": 5,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1531630800000,
-                "y": 6,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1531717200000,
-                "y": 7,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1531803600000,
-                "y": 8,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1531890000000,
-                "y": 9,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1531976400000,
-                "y": 10,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1532062800000,
-                "y": 11,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1532149200000,
-                "y": 12,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1532235600000,
-                "y": 13,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1532322000000,
-                "y": 14,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1532408400000,
-                "y": 15,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1532494800000,
-                "y": 16,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1532581200000,
-                "y": 17,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1532667600000,
-                "y": 18,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1532754000000,
-                "y": 19,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1532840400000,
-                "y": 20,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1532926800000,
-                "y": 21,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1533013200000,
-                "y": 22,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1533099600000,
-                "y": 23,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1533186000000,
-                "y": 24,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1533272400000,
-                "y": 25,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1533358800000,
-                "y": 26,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1533445200000,
-                "y": 27,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1533531600000,
-                "y": 28,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1533618000000,
-                "y": 29,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1533704400000,
-                "y": 30,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1533790800000,
-                "y": 31,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1533877200000,
-                "y": 32,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1533963600000,
-                "y": 33,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1534050000000,
-                "y": 34,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1534136400000,
-                "y": 0,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1534222800000,
-                "y": 1,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1534309200000,
-                "y": 2,
-              },
             ],
           },
         ],
@@ -320,6 +324,15 @@ exports[`CalendarChart should render a month view chart with one category axis, 
           "type": "category",
         },
       ]
+    }
+    dispatcher={
+      Dispatcher {
+        "API": null,
+        "config": null,
+        "container": <div />,
+        "dataTarget": null,
+        "src": null,
+      }
     }
     gridConfig={
       Object {
@@ -370,216 +383,6 @@ exports[`CalendarChart should render a month view chart with one category axis, 
                 "extraMetrics": Array [],
                 "series": "Count",
                 "x": 1531285200000,
-                "y": 2,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1531371600000,
-                "y": 3,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1531458000000,
-                "y": 4,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1531544400000,
-                "y": 5,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1531630800000,
-                "y": 6,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1531717200000,
-                "y": 7,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1531803600000,
-                "y": 8,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1531890000000,
-                "y": 9,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1531976400000,
-                "y": 10,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1532062800000,
-                "y": 11,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1532149200000,
-                "y": 12,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1532235600000,
-                "y": 13,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1532322000000,
-                "y": 14,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1532408400000,
-                "y": 15,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1532494800000,
-                "y": 16,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1532581200000,
-                "y": 17,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1532667600000,
-                "y": 18,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1532754000000,
-                "y": 19,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1532840400000,
-                "y": 20,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1532926800000,
-                "y": 21,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1533013200000,
-                "y": 22,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1533099600000,
-                "y": 23,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1533186000000,
-                "y": 24,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1533272400000,
-                "y": 25,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1533358800000,
-                "y": 26,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1533445200000,
-                "y": 27,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1533531600000,
-                "y": 28,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1533618000000,
-                "y": 29,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1533704400000,
-                "y": 30,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1533790800000,
-                "y": 31,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1533877200000,
-                "y": 32,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1533963600000,
-                "y": 33,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1534050000000,
-                "y": 34,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1534136400000,
-                "y": 0,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1534222800000,
-                "y": 1,
-              },
-              Object {
-                "extraMetrics": Array [],
-                "series": "Count",
-                "x": 1534309200000,
                 "y": 2,
               },
             ],
@@ -1173,6 +976,15 @@ exports[`CalendarChart should render a year view chart with two category axes, o
           "type": "category",
         },
       ]
+    }
+    dispatcher={
+      Dispatcher {
+        "API": null,
+        "config": null,
+        "container": <div />,
+        "dataTarget": null,
+        "src": null,
+      }
     }
     gridConfig={
       Object {

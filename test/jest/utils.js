@@ -21,7 +21,7 @@ import _ from 'lodash';
 
 export const truncateUnusable = (visData) => {
   const toDelete = ['xAxisField', 'xAxisLabel', 'series[0].values[0].aggConfigResult', 'series[0].values[0].aggConfig'];
-  return _.omit(visData, toDelete);
+  return _.cloneDeep(_.omit(visData, toDelete));
 };
 
 export const replicateDate = (visData, times = 35) => {
