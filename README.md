@@ -20,9 +20,11 @@ $ cd path/to/your/kibana
 $ bin/kibana-plugin install <installation file's url>
 ```
 
-### Compatibility
+As a reference, the following table describes the version compatibility with Kibana and the respective commands
 
-The minimum supported version of Kibana is version 6.4.0.
+| Kibana version | Command |
+| ---------- | ------- |
+| 6.4.0 | `./bin/kibana-plugin install https://github.com/aaronoah/kibana_calendar_vis/releases/download/v6.4.0/kibana_calendar_vis-6.4.0.zip`
 
 ## Development
 
