@@ -69,7 +69,7 @@ export class CalendarVisConfig extends BaseConfig {
       max: to
     } = timeFilter.getBounds();
 
-    if ( moment(new Date(from)).format("MMM Do YY") === moment(new Date(to)).format("MMM Do YY") ) {
+    if (moment(new Date(from)).format("MMM Do YYYY") === moment(new Date(to)).format("MMM Do YYYY") ) {
       // render a day view
       this.chartType = VIS_CHART_TYPE.HEATMAP_DAY;
       this.set('type', this.chartType);
