@@ -19,6 +19,7 @@
 
 import angular from 'angular';
 import _ from 'lodash';
+import moment from 'moment';
 import { BaseConfig } from './base_config';
 import { AXIS_SCALE_TYPE } from '../components/chart/axis/axis_scale';
 
@@ -67,8 +68,8 @@ export class CalendarVisConfig extends BaseConfig {
       min: from,
       max: to
     } = timeFilter.getBounds();
-    const diff = to.diff(from, 'days');
-    if (diff <= 1) {
+
+    if (moment(new Date(from)).format("MMM Do YYYY") === moment(new Date(to)).format("MMM Do YYYY") ) {
       // render a day view
       this.chartType = VIS_CHART_TYPE.HEATMAP_DAY;
       this.set('type', this.chartType);
@@ -88,7 +89,7 @@ export class CalendarVisConfig extends BaseConfig {
         },
       }]);
       this._updateBuckets('Hourly');
-    } else if (diff > 1 && diff < 32 && new Date(from).getMonth() === new Date(to).getMonth()) {
+    } else if (new Date(from).getMonth() === new Date(to).getMonth()  && new Date(from).getFullYear() === new Date(to).getFullYear()) {
       // render a month view
       this.chartType = VIS_CHART_TYPE.HEATMAP_MONTH;
       this.set('type', this.chartType);
@@ -101,7 +102,7 @@ export class CalendarVisConfig extends BaseConfig {
         },
       }]);
       this._updateBuckets('Daily');
-    } else if (diff > 31) {
+    } else {
       // render a year view
       this.chartType = VIS_CHART_TYPE.HEATMAP_YEAR;
       this.set('type', this.chartType);
